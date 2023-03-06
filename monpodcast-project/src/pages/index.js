@@ -1,12 +1,39 @@
-import { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, ThemeProvider, createMuiTheme,  } from "@material-ui/styles";
 import Category from "../components/Category";
+import clientPromise from '../../lib/mongodb'
+
+export async function getServerSideProps(context) {
+
+    const client = await clientPromise
+    const db =  client.db(process.env.MONGODB_DB)
+    const data = await db.collection("podcasts").find({}).limit(5).toArray();
+    console.log(data)
+    
+    const properties = JSON.parse(JSON.stringify(data));
+    const filtered = properties.map((property) =>{
+      const duration = JSON.parse(JSON.stringify(property.duration));
+
+      return {
+        _id: property._id,
+        name: property.name,
+        description: property.description,
+        date: property.date,
+        duration: duration.$numberDecimal,
+        image: "https://source.unsplash.com/random/200x100?sig=1"
+      }      
+    })
+
+    return {
+      props: { podcasts: filtered },
+    }
+}
+const theme = createMuiTheme;
 
 const useStyles = makeStyles((theme) => ({
   categoryContainer: {
     overflowX: "auto",
     whiteSpace: "nowrap",
-    padding: theme.spacing(2, 0),
+    // padding: useTheme().spacing(2, 0),
     "&::-webkit-scrollbar": {
       height: "0.5rem",
       backgroundColor: "#f5f5f5",
@@ -22,46 +49,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Home() {
+export default function Home({
+  podcasts
+}) {
   const classes = useStyles();
-  const podcasts = [
-    {
-      id: 1,
-      title: "Podcast 1",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      image: "https://source.unsplash.com/random/200x100?sig=1",
-    },
-    {
-      id: 2,
-      title: "Podcast 2",
-      description:
-        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      image: "https://source.unsplash.com/random/200x100?sig=2",
-    },
-    {
-      id: 3,
-      title: "Podcast 3",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      image: "https://source.unsplash.com/random/200x100?sig=3",
-    },
-    {
-      id: 4,
-      title: "Podcast 4",
-      description:
-        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      image: "https://source.unsplash.com/random/200x100?sig=4",
-    },
-    {
-      id: 5,
-      title: "Podcast 5",
-      description:
-        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      image: "https://source.unsplash.com/random/200x100?sig=5",
-    },
-    // Add more podcasts
-  ];
 
   return (
+    <ThemeProvider theme={theme}>
     <div
       className={classes.categoryContainer}
       id="category-container"
@@ -75,5 +69,6 @@ export default function Home() {
       <Category name="Category 2" podcasts={podcasts} />
       <Category name="Category 3" podcasts={podcasts} />
     </div>
+    </ThemeProvider>
   );
 }

@@ -15,7 +15,9 @@ const PodcastList = ({ podcasts }) => {
           <Card>
             <CardMedia component="img" src={podcast.image} />
             <CardContent>
-              <Typography variant="h6">{podcast.title}</Typography>
+              <Typography variant="h6">{podcast.name}</Typography>
+              <Typography variant="body1">{podcast.date} -- {podcast.duration}</Typography>
+
               <Typography variant="body2">{podcast.description}</Typography>
             </CardContent>
             <MdPlayCircleOutline size={32} color="primary" />
