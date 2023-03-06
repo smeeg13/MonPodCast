@@ -1,15 +1,8 @@
 
-export class Podcast {
-
-
-    constructor(name, description,date, duration ){
+export class User {
+    constructor(id, name, email ){
+        this.id = id;
         this.name = name;
-        this.description = description;
-        this.date = date;
-        this.duration = duration;
+        this.email = email;
     }
-
-    
-
-
 }
