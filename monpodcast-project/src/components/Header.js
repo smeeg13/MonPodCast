@@ -75,6 +75,13 @@ const Header = () => {
     setAnchorElUser(null);
   };
 
+ 
+const handleSearch = async(property) =>{
+    const data= await fetch(`http://localhost:3000/api/search?term=${property}`)
+    const res = await data.json();
+     console.log(res);
+   }
+
   return (
     <div className={classes.header}>
       <AppBar>
@@ -112,6 +119,12 @@ const Header = () => {
           />
           <div className={classes.search}>
             <InputBase
+            onKeyPress={(e) => {
+    if (e.key === 'Enter') {
+      handleSearch(e.target.value);
+    }
+  }}
+
               placeholder="Search…"
               classes={{
                 root: classes.inputRoot,
