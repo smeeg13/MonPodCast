@@ -1,0 +1,70 @@
+.player {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #e6f2ff;
+  width: 100%;
+  z-index: 9999;
+}
+
+.songInfo {
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+}
+
+.songPicture {
+  margin-right: 1rem;
+}
+
+.songName {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playButton {
+  border: none;
+  background: none;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.playButton img {
+  width: 2rem;
+}
+
+.volumeContainer {
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+}
+
+.volumeIcon {
+  width: 1.5rem;
+}
+
+.volumeSlider {
+  width: 5rem;
+  margin-left: 0.5rem;
+}
+
+.skipButton,
+.goBackButton {
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  margin-left: 0.5rem;
+}
+
+.skipButton img,
+.goBackButton img {
+  width: 100%;
+  height: 100%;
+}
