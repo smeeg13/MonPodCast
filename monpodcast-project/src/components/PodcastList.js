@@ -23,7 +23,7 @@ const PodcastList = ({ podcasts, handlePlayClick }) => {
               <Typography variant="body2">{podcast.description}</Typography>
             </CardContent>
             <button
-              onClick={() => handlePlayClick(podcast.url)}
+              onClick={() => handlePlayClick(podcast.url, podcast.name)}
               className={styles.playButton}
             >
               <MdPlayCircleOutline size={32} color="primary" />
