@@ -1,13 +1,20 @@
 import Header from "../components/Header";
-import Player from "../components/player";
+import Player from "../components/Player";
+import React, { useState } from "react";
 
 function MyApp({ Component, pageProps }) {
+  const [selectedPodcast, setSelectedPodcast] = useState(null);
+
   return (
     <>
       <Header />
-      <Component {...pageProps} />
-
-      <Player audioSrc="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" />
+      <Component {...pageProps} setSelectedPodcast={setSelectedPodcast} />
+      {selectedPodcast && (
+        <Player
+          audioSrc={selectedPodcast}
+          setSelectedPodcast={setSelectedPodcast}
+        />
+      )}
     </>
   );
 }

@@ -1,14 +1,20 @@
 const { connectToDb } = require("../../../lib/mongodb");
 const ObjectId = require("mongodb").ObjectId;
-const dayjs = require('dayjs')
+const dayjs = require("dayjs");
 import { PODCASTS_COLL } from "../../../utils/constants";
-
 
 export default class PodcastsManager {
   client;
 
   constructor() {
     this.client = connectToDb();
+    this.client.connect((err) => {
+      if (err) {
+        console.error("MongoDb Connection error", err);
+      } else {
+        console.log("MongoDB connected successfully");
+      }
+    });
   }
 
   #getCollection = async () => {
@@ -19,7 +25,7 @@ export default class PodcastsManager {
       return Podcasts;
     } catch (err) {
       console.error("MongoDb Connection error", err);
-      await client.close();
+      await this.client.close();
       return null;
     }
   };
@@ -28,24 +34,17 @@ export default class PodcastsManager {
     console.log(`Podcasts.js > getPodcasts`);
 
     const Podcasts = await this.#getCollection();
-    let res = await Podcasts.find({}).toArray();
-
-    res = res.map((podcast) => {
-      console.log(podcast);
-      const stringDuration = podcast.duration.toString();
-      const durationValue = parseFloat(stringDuration);
-
-      const newDate = dayjs(podcast.date).format('DD/MM/YYYY') 
-      return {
-        id: podcast._id.toHexString(),
-        name: podcast.name,
-        description: podcast.description,
-        date: newDate,
-        duration: durationValue,
-        tags: podcast.tags ?? [],
-        image: podcast.image ?? "https://source.unsplash.com/random/200x100?sig=1"
-      };
-    });
+    let res = await Podcasts.find(
+      {},
+      {
+        projection: {
+          _id: 0,
+          name: 1,
+          url: 1,
+          image: "https://source.unsplash.com/random/200x100",
+        },
+      }
+    ).toArray();
 
     if (res.length > 0) {
       console.log(res);
@@ -60,24 +59,19 @@ export default class PodcastsManager {
     console.log(`Podcasts.js > getPodcasts`);
 
     const Podcasts = await this.#getCollection();
-    let res = await Podcasts.findOne({ name: namepodcast });
+    let res = await Podcasts.findOne(
+      { name: namepodcast },
+      {
+        projection: {
+          _id: 0,
+          name: 1,
+          url: 1,
+          image: "https://source.unsplash.com/random/200x100",
+        },
+      }
+    );
 
-    res = res.map((podcast) => {
-      const newDate = dayjs(podcast.date).format('DD/MM/YYYY') 
-      const stringDuration = podcast.duration.toString();
-      const durationValue = parseFloat(stringDuration);
-
-      return {
-        id: podcast._id.toHexString(),
-        name: podcast.name,
-        description: podcast.description,
-        date: newDate,
-        duration: durationValue,
-        tags: podcast.tags ?? [],
-      };
-    });
-
-    if (res.length > 0) {
+    if (res) {
       console.log(res);
       return res;
     } else {
@@ -132,7 +126,4 @@ export default class PodcastsManager {
     const res = await Podcasts.deleteOne({ name: namepodcast });
     return res.deletedCount > 0;
   };
-
-  
 }
-

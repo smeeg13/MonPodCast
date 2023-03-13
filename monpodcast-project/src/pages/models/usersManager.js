@@ -2,12 +2,18 @@ const { connectToDb } = require("../../../lib/mongodb");
 const ObjectId = require("mongodb").ObjectId;
 import { USER_COLL } from "../../../utils/constants";
 
-
 export default class UsersManager {
   client;
 
   constructor() {
     this.client = connectToDb();
+    this.client.connect((err) => {
+      if (err) {
+        console.error("MongoDb Connection error", err);
+      } else {
+        console.log("MongoDB connected successfully");
+      }
+    });
   }
 
   #getCollection = async () => {
@@ -18,7 +24,7 @@ export default class UsersManager {
       return Users;
     } catch (err) {
       console.error("MongoDb Connection error", err);
-      await client.close();
+      await this.client.close();
       return null;
     }
   };
@@ -55,12 +61,12 @@ export default class UsersManager {
     let res = await Users.findOne({ name: nameuser });
 
     res = res.map((user) => {
-        return {
-            id: user._id.toHexString(),
-            email: user.email,
-            password: user.password,
-            name: user.name,
-          };
+      return {
+        id: user._id.toHexString(),
+        email: user.email,
+        password: user.password,
+        name: user.name,
+      };
     });
 
     if (res.length > 0) {
@@ -90,10 +96,7 @@ export default class UsersManager {
     console.log(`user.js > updateuser: ${user}`);
 
     const Users = await this.#getCollection();
-    return await Users.updateOne(
-      { _id: new ObjectId(id) },
-      { $set: user }
-    );
+    return await Users.updateOne({ _id: new ObjectId(id) }, { $set: user });
   };
 
   /*  Possible to update many doc to ensure they all have a certain field
@@ -118,6 +121,4 @@ export default class UsersManager {
     const res = await Users.deleteOne({ name: nameuser });
     return res.deletedCount > 0;
   };
-
 }
-

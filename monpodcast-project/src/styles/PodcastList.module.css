@@ -1,0 +1,20 @@
+.playButton {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.playButton:focus {
+  outline: none;
+}
+
+.playButton:hover {
+  opacity: 0.7;
+}
+
+@media (max-width: 600px) {
+  .cardMedia {
+    height: 200px;
+  }
+}

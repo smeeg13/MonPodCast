@@ -1,28 +1,35 @@
-import { Typography } from "@material-ui/core";
-import PodcastList from "../components/PodcastList";
 import PodcastsManager from "./models/podcastsManager";
+import { makeStyles } from "@material-ui/core/styles";
+import { List, ListItem, ListItemText } from "@material-ui/core";
 
-export async function getServerSideProps(context) {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+    backgroundColor: theme.palette.background.paper,
+  },
+}));
 
+export async function getStaticProps() {
   const podcasts = new PodcastsManager();
-
   const result = await podcasts.getAllPodcasts();
 
-    return {
-      props: { podcasts: result },
-    }
+  return {
+    props: { podcasts: result },
+  };
 }
-const Podcasts = ({
-  podcasts
-}) => {
-  return (
-    <>
-      <Typography variant="h4" gutterBottom>
-        All Podcasts
-      </Typography>
-      <PodcastList podcasts={podcasts} />
-    </>
-  );
-};
 
-export default Podcasts;
+export default function Podcasts({ podcasts }) {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.root}>
+      <List component="nav" aria-label="podcasts list">
+        {podcasts.map((podcast) => (
+          <ListItem button key={podcast.id}>
+            <ListItemText primary={podcast.name} />
+          </ListItem>
+        ))}
+      </List>
+    </div>
+  );
+}

@@ -1,16 +1,17 @@
-import { makeStyles, ThemeProvider, createMuiTheme,  } from "@material-ui/styles";
+import { makeStyles, ThemeProvider, createMuiTheme } from "@material-ui/styles";
 import Category from "../components/Category";
 import PodcastsManager from "./models/podcastsManager";
-export async function getServerSideProps(context) {
+import { useState } from "react";
+import Player from "../components/Player";
 
+export async function getServerSideProps(context) {
   const podcasts = new PodcastsManager();
 
   const result = await podcasts.getAllPodcasts();
 
-
-    return {
-      props: { podcasts: result },
-    }
+  return {
+    props: { podcasts: result },
+  };
 }
 const theme = createMuiTheme;
 
@@ -34,26 +35,38 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Home({
-  podcasts
-}) {
+export default function Home({ podcasts }) {
   const classes = useStyles();
+  const [selectedAudioUrl, setSelectedAudioUrl] = useState(null);
+
+  const handleSelectAudioUrl = (audioUrl) => {
+    setSelectedAudioUrl(audioUrl);
+  };
 
   return (
     <ThemeProvider theme={theme}>
-    <div
-      className={classes.categoryContainer}
-      id="category-container"
-      style={{ marginTop: 100 }}
-    >
-      <Category
-        name="Category 1"
-        podcasts={podcasts}
-        style={{ overflowX: "auto" }}
-      />
-      <Category name="Category 2" podcasts={podcasts} />
-      <Category name="Category 3" podcasts={podcasts} />
-    </div>
+      <div
+        className={classes.categoryContainer}
+        id="category-container"
+        style={{ marginTop: 100 }}
+      >
+        <Category
+          name="Category 1"
+          podcasts={podcasts}
+          onSelectAudioUrl={handleSelectAudioUrl}
+        />
+        <Category
+          name="Category 2"
+          podcasts={podcasts}
+          onSelectAudioUrl={handleSelectAudioUrl}
+        />
+        <Category
+          name="Category 3"
+          podcasts={podcasts}
+          onSelectAudioUrl={handleSelectAudioUrl}
+        />
+      </div>
+      {selectedAudioUrl && <Player audioSrc={selectedAudioUrl} />}
     </ThemeProvider>
   );
 }

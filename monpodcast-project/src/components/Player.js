@@ -9,19 +9,23 @@ const songPicture =
   "https://www.shutterstock.com/image-vector/vector-cartoon-music-note-icon-260nw-1165584241.jpg";
 const songName = "Example Song Title (Very Very Long Song Title)";
 
-const Player = ({ audioSrc }) => {
+const Player = ({ audioSrc, shouldPlay }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5);
   const audioRef = useRef();
 
-  const handlePlayPause = () => {
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
+  const handlePlayPause = (shouldPlay) => {
+    if (shouldPlay) {
       audioRef.current.play();
+    } else {
+      audioRef.current.pause();
     }
-    setIsPlaying(!isPlaying);
+    setIsPlaying(shouldPlay);
   };
+
+  useEffect(() => {
+    handlePlayPause(shouldPlay);
+  }, [shouldPlay]);
 
   const handleVolumeChange = (event) => {
     setVolume(parseFloat(event.target.value));
@@ -52,7 +56,10 @@ const Player = ({ audioSrc }) => {
           <marquee onAnimationEnd={handleAnimationEnd}>{songName}</marquee>
         </div>
       </div>
-      <button className={styles.playButton} onClick={handlePlayPause}>
+      <button
+        className={styles.playButton}
+        onClick={() => handlePlayPause(!isPlaying)}
+      >
         <img
           src={isPlaying ? pauseIcon : playIcon}
           alt={isPlaying ? "Pause" : "Play"}
