@@ -1,5 +1,5 @@
 import Header from "../components/Header";
-import Player from "../components/player";
+import Player from "../components/Player";
 
 function MyApp({ Component, pageProps }) {
   return (
