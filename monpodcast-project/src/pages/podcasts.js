@@ -1,55 +1,35 @@
-import { Typography } from "@material-ui/core";
-import PodcastList from "../components/PodcastList";
 import PodcastsManager from "../models/podcastsManager";
 import { makeStyles } from "@material-ui/styles";
+import { List, ListItem, ListItemText } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-  podcastsContainer: {
-    overflowX: "auto",
-    whiteSpace: "nowrap",
-    // padding: useTheme().spacing(2, 0),
-    "&::-webkit-scrollbar": {
-      height: "0.5rem",
-      backgroundColor: "#f5f5f5",
-      borderRadius: "0.25rem",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "#ddd",
-      borderRadius: "0.25rem",
-    },
-    "&::-webkit-scrollbar-thumb:hover": {
-      backgroundColor: "#ccc",
-    },
+  root: {
+    width: "100%",
+    backgroundColor: theme.palette.background.paper,
   },
 }));
 
-export async function getServerSideProps(context) {
-
+export async function getStaticProps() {
   const podcasts = new PodcastsManager();
-
   const result = await podcasts.getAllPodcasts();
 
-    return {
-      props: { podcasts: result },
-    }
+  return {
+    props: { podcasts: result },
+  };
 }
-const Podcasts = ({
-  podcasts
-}) => {
+
+export default function Podcasts({ podcasts }) {
   const classes = useStyles();
 
   return (
-    <div
-      className={classes.podcastsContainer}
-      id="podcasts-container"
-      style={{ marginTop: 100 }}
-      >
-      <Typography variant="h4" gutterBottom>
-        All Podcasts
-      </Typography>
-      <PodcastList podcasts={podcasts} />
+    <div className={classes.root}>
+      <List component="nav" aria-label="podcasts list">
+        {podcasts.map((podcast) => (
+          <ListItem button key={podcast.id}>
+            <ListItemText primary={podcast.name} />
+          </ListItem>
+        ))}
+      </List>
     </div>
   );
-};
-
-export default Podcasts;
+}

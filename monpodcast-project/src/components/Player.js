@@ -7,12 +7,22 @@ const pauseIcon = "https://cdn-icons-png.flaticon.com/512/2920/2920686.png";
 const volumeIcon = "https://cdn-icons-png.flaticon.com/512/25/25695.png";
 const songPicture =
   "https://www.shutterstock.com/image-vector/vector-cartoon-music-note-icon-260nw-1165584241.jpg";
-const songName = "Example Song Title (Very Very Long Song Title)";
 
-const Player = ({ audioSrc }) => {
+const Player = ({ audioSrc, podcastName }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5);
+  const [currentSongName, setCurrentSongName] = useState(podcastName || "");
   const audioRef = useRef();
+
+  useEffect(() => {
+    setIsPlaying(true);
+    audioRef.current.play();
+  }, []);
+
+  useEffect(() => {
+    setCurrentSongName(podcastName || "There's no title");
+    console.log(podcastName);
+  }, [podcastName]);
 
   const handlePlayPause = () => {
     if (isPlaying) {
@@ -49,7 +59,9 @@ const Player = ({ audioSrc }) => {
           <Image src={songPicture} alt="Song Picture" width={64} height={64} />
         </div>
         <div className={styles.songName}>
-          <marquee onAnimationEnd={handleAnimationEnd}>{songName}</marquee>
+          <marquee onAnimationEnd={handleAnimationEnd}>
+            {currentSongName}
+          </marquee>
         </div>
       </div>
       <button className={styles.playButton} onClick={handlePlayPause}>
@@ -70,7 +82,6 @@ const Player = ({ audioSrc }) => {
           onChange={handleVolumeChange}
         />
       </div>
-
       <button className={styles.goBackButton} onClick={handleGoBackTenSeconds}>
         <img
           src="https://cdn-icons-png.flaticon.com/128/254/254437.png"

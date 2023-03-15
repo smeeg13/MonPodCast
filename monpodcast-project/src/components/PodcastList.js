@@ -6,8 +6,9 @@ import {
   Typography,
 } from "@material-ui/core";
 import { MdPlayCircleOutline } from "react-icons/md";
+import styles from "../styles/PodcastList.module.css";
 
-const PodcastList = ({ podcasts }) => {
+const PodcastList = ({ podcasts, handlePlayClick }) => {
   return (
     <Grid container spacing={2}>
       {podcasts.map((podcast, index) => (
@@ -16,11 +17,17 @@ const PodcastList = ({ podcasts }) => {
             <CardMedia component="img" src={podcast.image} />
             <CardContent>
               <Typography variant="h6">{podcast.name}</Typography>
-              <Typography variant="body1">{podcast.date} -- {podcast.duration}</Typography>
-
+              <Typography variant="body1">
+                {podcast.date} -- {podcast.duration}
+              </Typography>
               <Typography variant="body2">{podcast.description}</Typography>
             </CardContent>
-            <MdPlayCircleOutline size={32} color="primary" />
+            <button
+              onClick={() => handlePlayClick(podcast.url, podcast.name)}
+              className={styles.playButton}
+            >
+              <MdPlayCircleOutline size={32} color="primary" />
+            </button>
           </Card>
         </Grid>
       ))}

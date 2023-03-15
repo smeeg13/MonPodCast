@@ -7,6 +7,13 @@ export default class CategoriesManager {
 
   constructor() {
     this.client = connectToDb();
+    this.client.connect((err) => {
+      if (err) {
+        console.error("MongoDb Connection error", err);
+      } else {
+        console.log("MongoDB connected successfully");
+      }
+    });
   }
 
   #getCollection = async () => {
@@ -17,7 +24,7 @@ export default class CategoriesManager {
       return Categories;
     } catch (err) {
       console.error("MongoDb Connection error", err);
-      await client.close();
+      await this.client.close();
       return null;
     }
   };
@@ -52,10 +59,10 @@ export default class CategoriesManager {
     let res = await Categories.findOne({ name: namecategory });
 
     res = res.map((category) => {
-        return {
-            id: category._id.toHexString(),
-            name: category.name,
-          };
+      return {
+        id: category._id.toHexString(),
+        name: category.name,
+      };
     });
 
     if (res.length > 0) {
@@ -105,6 +112,4 @@ export default class CategoriesManager {
     const res = await Categories.deleteOne({ name: namecategory });
     return res.deletedCount > 0;
   };
-
 }
-
