@@ -1,8 +1,8 @@
-const { connectToDb } = require("../../../lib/mongodb");
+const { connectToDb } = require("../../lib/mongodb");
 const ObjectId = require("mongodb").ObjectId;
-import { CATEGORY_COLL } from "../../../utils/constants";
+import { CATEGORY_COLL } from "../../utils/constants";
 
-export default class Categories {
+export default class CategoriesManager {
   client;
 
   constructor() {
@@ -45,7 +45,7 @@ export default class Categories {
     }
   };
 
-  getUserByName = async (namecategory) => {
+  getCategoryByName = async (namecategory) => {
     console.log(`Categories.js > getCategories`);
 
     const Categories = await this.#getCollection();
@@ -67,11 +67,13 @@ export default class Categories {
     }
   };
 
-  addUser = async (category) => {
-    console.log(`category.js > addcategory: ${category}`);
+  upsertCategory = async (id, category) => {
+    console.log(`category.js > updatecategory: ${category}`);
 
-    const Categories = await this.#getCollection();
-    return await Categories.insertOne(category);
+    const categoryCollection = await this.#getCollection();
+    return await categoryCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: category }, { upsert: true });
   };
 
   addMultipleCategories = async (newCategories) => {
@@ -81,16 +83,6 @@ export default class Categories {
     return await Categories.insertMany(newCategories);
   };
 
-  updateUser = async (id, category) => {
-    console.log(`category.js > updatecategory: ${category}`);
-
-    const Categories = await this.#getCollection();
-    return await Categories.updateOne(
-      { _id: new ObjectId(id) },
-      { $set: category }
-    );
-  };
-
   /*  Possible to update many doc to ensure they all have a certain field
     those which already have the fields stays same 
     and other get updated with the field putted as unknown
@@ -98,7 +90,7 @@ export default class Categories {
      => by using [...].updateMany({client: {$exist: false}}, {$set: {client: "Unknown"}});
 */
 
-  deleteUserById = async (id) => {
+  deleteCategoryById = async (id) => {
     console.log(`category.js > deletecategory: ${id}`);
 
     const Categories = await this.#getCollection();
@@ -106,7 +98,7 @@ export default class Categories {
     return res.deletedCount > 0;
   };
 
-  deleteUserByName = async (namecategory) => {
+  deleteCategoryByName = async (namecategory) => {
     console.log(`category.js > deletecategory: ${namecategory}`);
 
     const Categories = await this.#getCollection();

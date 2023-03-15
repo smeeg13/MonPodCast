@@ -1,9 +1,7 @@
-import { MongoClient } from 'mongodb';
-import clientPromise from '../../../lib/mongodb'
 
 export default async function handler(req, res){
     
-    const client =  await clientPromise;
+    const client = connectToDb();
     const db = client.db(process.env.MONGODB_DB);
     const data = await db.collection("podcasts").aggregate([
         {

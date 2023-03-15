@@ -1,6 +1,8 @@
-import { makeStyles, ThemeProvider, createMuiTheme,  } from "@material-ui/styles";
+import { makeStyles  } from "@material-ui/styles";
 import Category from "../components/Category";
-import PodcastsManager from "./models/podcastsManager";
+import PodcastsManager from "../models/podcastsManager";
+import {theme} from '../../utils/theme'
+
 export async function getServerSideProps(context) {
 
   const podcasts = new PodcastsManager();
@@ -12,7 +14,6 @@ export async function getServerSideProps(context) {
       props: { podcasts: result },
     }
 }
-const theme = createMuiTheme;
 
 const useStyles = makeStyles((theme) => ({
   categoryContainer: {
@@ -40,7 +41,6 @@ export default function Home({
   const classes = useStyles();
 
   return (
-    <ThemeProvider theme={theme}>
     <div
       className={classes.categoryContainer}
       id="category-container"
@@ -54,6 +54,5 @@ export default function Home({
       <Category name="Category 2" podcasts={podcasts} />
       <Category name="Category 3" podcasts={podcasts} />
     </div>
-    </ThemeProvider>
   );
 }

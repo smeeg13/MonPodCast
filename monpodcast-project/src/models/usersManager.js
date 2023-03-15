@@ -1,6 +1,6 @@
-const { connectToDb } = require("../../../lib/mongodb");
+const { connectToDb } = require("../../lib/mongodb");
 const ObjectId = require("mongodb").ObjectId;
-import { USER_COLL } from "../../../utils/constants";
+import { USER_COLL } from "../../utils/constants";
 
 
 export default class UsersManager {
