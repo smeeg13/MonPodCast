@@ -15,6 +15,13 @@ const Player = ({ audioSrc, podcastName }) => {
   const audioRef = useRef();
 
   useEffect(() => {
+    console.log("Player useEffect podcastName:", podcastName);
+    if (podcastName !== currentSongName) {
+      setCurrentSongName(podcastName || "There's no title");
+    }
+  }, [podcastName, currentSongName]);
+
+  useEffect(() => {
     setIsPlaying(true);
     audioRef.current.play();
   }, []);

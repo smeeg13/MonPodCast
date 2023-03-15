@@ -1,8 +1,7 @@
-import { makeStyles  } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/styles";
 import Category from "../components/Category";
 import PodcastsManager from "../models/podcastsManager";
-import {theme} from '../../utils/theme'
-
+import { theme } from "../../utils/theme";
 import { useState } from "react";
 import Player from "../components/Player";
 
@@ -20,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
   categoryContainer: {
     overflowX: "auto",
     whiteSpace: "nowrap",
-    // padding: useTheme().spacing(2, 0),
     "&::-webkit-scrollbar": {
       height: "0.5rem",
       backgroundColor: "#f5f5f5",
@@ -34,18 +32,23 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#ccc",
     },
   },
+  pageWrapper: {
+    marginBottom: "100px",
+  },
 }));
 
 export default function Home({ podcasts }) {
   const classes = useStyles();
   const [selectedAudioUrl, setSelectedAudioUrl] = useState(null);
+  const [selectedPodcastName, setSelectedPodcastName] = useState("");
 
-  const handleSelectAudioUrl = (audioUrl) => {
-    setSelectedAudioUrl(audioUrl);
+  const handlePlayClick = (audioSrc, podcastName) => {
+    setSelectedAudioUrl(audioSrc);
+    setSelectedPodcastName(podcastName);
   };
 
   return (
-    <>
+    <div className={classes.pageWrapper}>
       <div
         className={classes.categoryContainer}
         id="category-container"
@@ -54,20 +57,22 @@ export default function Home({ podcasts }) {
         <Category
           name="Category 1"
           podcasts={podcasts}
-          onSelectAudioUrl={handleSelectAudioUrl}
+          handlePlayClick={handlePlayClick}
         />
         <Category
           name="Category 2"
           podcasts={podcasts}
-          onSelectAudioUrl={handleSelectAudioUrl}
+          handlePlayClick={handlePlayClick}
         />
         <Category
           name="Category 3"
           podcasts={podcasts}
-          onSelectAudioUrl={handleSelectAudioUrl}
+          handlePlayClick={handlePlayClick}
         />
       </div>
-      {selectedAudioUrl && <Player audioSrc={selectedAudioUrl} />}
-    </>
+      {selectedAudioUrl && (
+        <Player audioSrc={selectedAudioUrl} podcastName={selectedPodcastName} />
+      )}
+    </div>
   );
 }

@@ -17,6 +17,7 @@ const Category = ({ name, podcasts }) => {
       {selectedPodcast && (
         <Player
           audioSrc={selectedPodcast}
+          podcastName={selectedPodcast}
           setSelectedPodcast={setSelectedPodcast}
         />
       )}

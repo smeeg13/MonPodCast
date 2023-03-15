@@ -1,5 +1,5 @@
-import PodcastsManager from "../models/podcastsManager";
-import { makeStyles } from "@material-ui/styles";
+import PodcastsManager from "./models/podcastsManager";
+import { makeStyles } from "@material-ui/core/styles";
 import { List, ListItem, ListItemText } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
