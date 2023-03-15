@@ -45,7 +45,7 @@ export default function Home({ podcasts }) {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <div
         className={classes.categoryContainer}
         id="category-container"
@@ -68,6 +68,6 @@ export default function Home({ podcasts }) {
         />
       </div>
       {selectedAudioUrl && <Player audioSrc={selectedAudioUrl} />}
-    </ThemeProvider>
+    </>
   );
 }
