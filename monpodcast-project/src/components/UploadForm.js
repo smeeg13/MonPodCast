@@ -1,9 +1,10 @@
 import { useFormik } from "formik";
 import React, { useState } from "react"; 
 import { TagsInput } from "react-tag-input-component"; 
+import { getDuration } from "../../utils/tools";
   
 const UploadForm = () => {
-  const [tagSelected, setTagSelected] = useState(["gfg"]);
+  const [tagSelected, setTagSelected] = useState([]);
 
   // Pass the useFormik() hook initial form values and a submit function that will
   // be called when the form is submitted
@@ -30,19 +31,22 @@ const UploadForm = () => {
   const handleSubmit = async (event) => {
    // event.preventDefault();
     const inputs = event;
+    const selectedFile = document.getElementById("controlFile").files[0];
+    console.log('file selected ::', selectedFile)
+    const durationFormFile = getDuration(selectedFile);
     // Get data from the form.
     const data = {
       name: inputs.name,
       description: inputs.description,
       url: inputs.url,
       date: inputs.date,
-      duration: inputs.duration,
+      duration: durationFormFile != -1 ? durationFormFile : 0,
       tags: inputs.tags,
       image: inputs.image,
       nameCat: inputs.nameCat,
-      controlFile: inputs.controlFile
+      controlFile: selectedFile
     };
-    console.log('file selected ::', inputs.controlFile)
+   
 
     const JSONdata = JSON.stringify(data);
     const endpoint = "/api/upload";
@@ -181,6 +185,7 @@ const UploadForm = () => {
           className="form-control-file"
           id="controlFile"
           name="controlFile"
+          accept="audio/*"
         />
       </div>
       <br />
