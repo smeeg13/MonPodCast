@@ -1,10 +1,26 @@
+import CategoriesManager from "@/models/categoriesManager";
 import { useFormik } from "formik";
 import React, { useState } from "react"; 
 import { TagsInput } from "react-tag-input-component"; 
 import { getDuration } from "../../utils/tools";
   
-const UploadForm = () => {
+
+export async function getStaticProps() {
+  const categories = new CategoriesManager();
+  const result = await categories.getAllCategories();
+  
+
+  return {
+    props: { categories: result },
+  };
+}
+const UploadForm = ({ categories }) => {
+
+
   const [tagSelected, setTagSelected] = useState([]);
+
+
+
 
   // Pass the useFormik() hook initial form values and a submit function that will
   // be called when the form is submitted
@@ -33,7 +49,11 @@ const UploadForm = () => {
     const inputs = event;
     const selectedFile = document.getElementById("controlFile").files[0];
     console.log('file selected ::', selectedFile)
-    const durationFormFile = getDuration(selectedFile);
+    var durationFormFile = 0;
+    if(selectedFile !=null){
+      durationFormFile = getDuration(selectedFile);
+    }
+
     // Get data from the form.
     const data = {
       name: inputs.name,
@@ -62,6 +82,7 @@ const UploadForm = () => {
     // Get the response data from server as JSON.
     const result = await response.json();
     alert(`${result.data}`);
+    //TODO: go back to the pdcast page
   };
 
   return (
@@ -166,7 +187,7 @@ const UploadForm = () => {
       </div>
       <br />
       <div className="form-group">
-        <label htmlFor="nameCat">Category Name  </label>
+        {/* <label htmlFor="nameCat">Category Name  </label>
         <input
           type="text"
           id="nameCat"
@@ -174,8 +195,29 @@ const UploadForm = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.nameCat}
-        />
+        /> */}
+        <label for="data">Choose a Category:</label>
+
+        <input list="list-cat" id="list-cat" name="list-cat"/>
+
+<datalist id="list-cat">
+<datalist id="data">
+    {categories.map((item, key) =>
+      <option key={key} value={item} />
+    )}
+  </datalist>
+    <option value="Chocolate"/>
+    <option value="Coconut"/>
+    <option value="Mint"/>
+    <option value="Strawberry"/>
+    <option value="Vanilla"/>
+</datalist>
+
       </div>
+      
+      
+
+
       <br />
       {/* //TODO selection du fichier */}
       <div className="form-group">
