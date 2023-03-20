@@ -1,8 +1,7 @@
 const { connectToDb } = require("../../lib/mongodb");
 const ObjectId = require("mongodb").ObjectId;
-const dayjs = require('dayjs')
+const dayjs = require("dayjs");
 import { PODCASTS_COLL } from "../../utils/constants";
-
 
 export default class PodcastsManager {
   client;
@@ -30,21 +29,23 @@ export default class PodcastsManager {
     const Podcasts = await this.#getCollection();
     let res = await Podcasts.find({}).toArray();
 
-    res = res.map((podcast) => {
+    res = res.map((podcast, index) => {
       console.log(podcast);
-      const stringDuration = podcast.duration ?? '';
+      const stringDuration = podcast.duration ?? "";
       const durationValue = parseFloat(stringDuration);
 
-      const newDate = dayjs(podcast.date).format('DD/MM/YYYY') 
+      const newDate = dayjs(podcast.date).format("DD/MM/YYYY");
       return {
         id: podcast._id.toHexString(),
         name: podcast.name,
-        description: podcast.description ?? '',
-        url: podcast.url ?? '',
-        date: newDate ?? '',
+        description: podcast.description ?? "",
+        url: podcast.url ?? "",
+        date: newDate ?? "",
         duration: durationValue,
         tags: podcast.tags ?? [],
-        image: podcast.image ?? "https://source.unsplash.com/random/200x100?sig=1"
+        image:
+          podcast.image ??
+          `https://source.unsplash.com/random/200x100?sig=${index + 1}`,
       };
     });
 
@@ -64,19 +65,20 @@ export default class PodcastsManager {
     let res = await Podcasts.findOne({ name: namepodcast });
 
     res = res.map((podcast) => {
-      const newDate = dayjs(podcast.date).format('DD/MM/YYYY') 
-      const stringDuration = podcast.duration ?? '';
+      const newDate = dayjs(podcast.date).format("DD/MM/YYYY");
+      const stringDuration = podcast.duration ?? "";
       const durationValue = parseFloat(stringDuration);
 
       return {
         id: podcast._id.toHexString(),
         name: podcast.name,
-        description: podcast.description ?? '',
-        url: podcast.url ?? '',
-        date: newDate ?? '',
+        description: podcast.description ?? "",
+        url: podcast.url ?? "",
+        date: newDate ?? "",
         duration: durationValue,
         tags: podcast.tags ?? [],
-        image: podcast.image ?? "https://source.unsplash.com/random/200x100?sig=1"
+        image:
+          podcast.image ?? "https://source.unsplash.com/random/200x100?sig=1",
       };
     });
 
@@ -135,7 +137,4 @@ export default class PodcastsManager {
     const res = await Podcasts.deleteOne({ name: namepodcast });
     return res.deletedCount > 0;
   };
-
-  
 }
-

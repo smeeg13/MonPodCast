@@ -2,7 +2,7 @@ import { useState } from "react";
 import PodcastList from "./PodcastList";
 import { Typography } from "@material-ui/core";
 import { MdPlayCircleOutline } from "react-icons/md";
-import Player from "./player";
+import Player from "./Player";
 
 const Category = ({ name, podcasts }) => {
   const [selectedPodcast, setSelectedPodcast] = useState(null);
