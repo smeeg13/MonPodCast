@@ -111,6 +111,9 @@ const handleSearch = async(property) =>{
             <MenuItem>
               <Link href="/categories">Categories</Link>
             </MenuItem>
+            <MenuItem>
+              <Link href="/loginScreen">Login</Link>
+            </MenuItem>
           </Menu>
           <img
             src="https://miniextensions.com/wp-content/uploads/sites/5/2019/12/placeholder.com-logo1.png"

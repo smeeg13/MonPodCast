@@ -21,10 +21,12 @@
     "@mui/material": "^5.11.13",
     "bootstrap": "^5.2.3",
     "dayjs": "^1.11.7",
+    "dns": "file:./src/mock/dns",
     "eslint-config-next": "^13.2.3",
     "formik": "^2.2.9",
     "mongodb": "^5.1.0",
     "mongoose": "^7.0.1",
+    "net": "^1.0.2",
     "next": "^13.2.3",
     "next-connect": "^0.13.0",
     "react": "^18.2.0",
@@ -36,5 +38,10 @@
   "devDependencies": {
     "@types/prop-types": "^15.7.5",
     "prop-types": "^15.8.1"
+  },
+  "browser": {
+    "tls": false,
+    "net": false,
+    "fs": false
   }
 }
