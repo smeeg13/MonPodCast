@@ -1,0 +1,31 @@
+.horizontalScrollContainer {
+  display: flex;
+  align-items: center;
+}
+
+.arrowLeft,
+.arrowRight {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.scrollWrapper {
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.MuiGrid-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+}

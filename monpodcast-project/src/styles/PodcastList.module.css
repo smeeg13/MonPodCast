@@ -12,7 +12,13 @@
 .playButton:hover {
   opacity: 0.7;
 }
-
+.MuiGrid-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap; /* Change from wrap to nowrap */
+  box-sizing: border-box;
+  overflow: auto; /* Add overflow property */
+}
 @media (max-width: 600px) {
   .cardMedia {
     height: 200px;
