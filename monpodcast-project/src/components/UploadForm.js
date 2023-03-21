@@ -1,31 +1,16 @@
-import CategoriesManager from "@/models/categoriesManager";
 import { useFormik } from "formik";
-import React, { useState } from "react"; 
-import { TagsInput } from "react-tag-input-component"; 
+import React, { useState } from "react";
+import { TagsInput } from "react-tag-input-component";
 import { getDuration } from "../../utils/tools";
-  
+import CategoriesManager from "@/models/categoriesManager";
 
-export async function getStaticProps() {
-  const categories = new CategoriesManager();
-  const result = await categories.getAllCategories();
-  
-
-  return {
-    props: { categories: result },
-  };
-}
-const UploadForm = ({ categories }) => {
-
-
+export default function UploadForm({ categories }) {
   const [tagSelected, setTagSelected] = useState([]);
-
-
-
 
   // Pass the useFormik() hook initial form values and a submit function that will
   // be called when the form is submitted
   const formik = useFormik({
-    initialValues: {     
+    initialValues: {
       name: "",
       description: "",
       url: "",
@@ -34,7 +19,7 @@ const UploadForm = ({ categories }) => {
       tags: tagSelected,
       image: "",
       nameCat: "",
-      controlFile:""
+      controlFile: "",
     },
     validate,
     onSubmit: (event) => {
@@ -44,13 +29,11 @@ const UploadForm = ({ categories }) => {
   });
 
   // Handles the submit event on form submit.
-  const handleSubmit = async (event) => {
-   // event.preventDefault();
-    const inputs = event;
+  const handleSubmit = async (inputs) => {
     const selectedFile = document.getElementById("controlFile").files[0];
-    console.log('file selected ::', selectedFile)
-    var durationFormFile = 0;
-    if(selectedFile !=null){
+    console.log("file selected ::", selectedFile);
+    var durationFormFile = -1;
+    if (selectedFile != null) {
       durationFormFile = getDuration(selectedFile);
     }
 
@@ -61,12 +44,12 @@ const UploadForm = ({ categories }) => {
       url: inputs.url,
       date: inputs.date,
       duration: durationFormFile != -1 ? durationFormFile : 0,
-      tags: inputs.tags,
+      tags: tagSelected,
       image: inputs.image,
       nameCat: inputs.nameCat,
-      controlFile: selectedFile
+      controlFile: selectedFile,
     };
-   
+    console.log("DATA PASSED TO REQUEST ::", data);
 
     const JSONdata = JSON.stringify(data);
     const endpoint = "/api/upload";
@@ -76,11 +59,14 @@ const UploadForm = ({ categories }) => {
       body: JSONdata,
     };
 
-    // Send the form data to our forms API on Vercel and get a response.
+    // Send the form data to our forms API and get a response.
     const response = await fetch(endpoint, options);
+    console.log("request sent");
 
     // Get the response data from server as JSON.
     const result = await response.json();
+    console.log("response received");
+
     alert(`${result.data}`);
     //TODO: go back to the pdcast page
   };
@@ -145,7 +131,7 @@ const UploadForm = ({ categories }) => {
           onBlur={formik.handleBlur}
           value={formik.values.date}
         />
-                {formik.touched.date && formik.errors.date ? (
+        {formik.touched.date && formik.errors.date ? (
           <small className="form-text text-muted">{formik.errors.date}</small>
         ) : null}
       </div>
@@ -177,46 +163,34 @@ const UploadForm = ({ categories }) => {
       <div className="form-group">
         {/* //TODO tags entered */}
         <label htmlFor="tags">Tags related</label>
-      <TagsInput
-        onBlur={formik.handleBlur}
-        value={formik.values.tags}
-        onChange={setTagSelected}
-        name="tags"
-        placeHolder="tags"
-      />
+        <TagsInput
+          onBlur={formik.handleBlur}
+          value={formik.values.tags}
+          onChange={setTagSelected}
+          name="tags"
+          placeHolder="tags"
+        />
       </div>
       <br />
       <div className="form-group">
-        {/* <label htmlFor="nameCat">Category Name  </label>
+        <label htmlFor="nameCat">Choose a Category : </label>
+
         <input
-          type="text"
+          list="list-cat"
           id="nameCat"
           name="nameCat"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.nameCat}
-        /> */}
-        <label for="data">Choose a Category:</label>
-
-        <input list="list-cat" id="list-cat" name="list-cat"/>
-
-<datalist id="list-cat">
-<datalist id="data">
-    {categories.map((item, key) =>
-      <option key={key} value={item} />
-    )}
-  </datalist>
-    <option value="Chocolate"/>
-    <option value="Coconut"/>
-    <option value="Mint"/>
-    <option value="Strawberry"/>
-    <option value="Vanilla"/>
-</datalist>
-
+        />
+        <datalist id="list-cat">
+          {categories.map((category) => (
+            <option key={category.id} value={category.name}>
+              {category.name}
+            </option>
+          ))}
+        </datalist>
       </div>
-      
-      
-
 
       <br />
       {/* //TODO selection du fichier */}
@@ -237,7 +211,7 @@ const UploadForm = ({ categories }) => {
       </button>
     </form>
   );
-};
+}
 
 // A custom validation function. This must return an object
 // which keys are symmetrical to our values/initialValues
@@ -260,8 +234,8 @@ const validate = (values) => {
   if (new Date(values.date) <= new Date(new Date().toDateString())) {
     errors.date = "Must be before or on today";
   }
-
+  if (!values.nameCat) {
+    errors.nameCat = "Required";
+  }
   return errors;
 };
-
-export default UploadForm;

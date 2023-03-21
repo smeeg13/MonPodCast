@@ -2,6 +2,7 @@ import UploadForm from "@/components/UploadForm";
 import Head from "next/head";
 import { Container, Typography, List, ListItem } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import CategoriesManager from '../models/categoriesManager'
 
 const useStyles = makeStyles((theme) => ({
   uploadContainer: {
@@ -23,7 +24,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const UploadPages = () => {
+export async function getStaticProps() {
+  const categories = new CategoriesManager();
+  const result = await categories.getAllCategories();
+
+  console.log(result);
+
+  return {
+    props: { categories: result },
+  };
+}
+
+export default function UploadPage  ({ categories }) {
   const classes = useStyles();
 
   return (
@@ -39,10 +51,8 @@ const UploadPages = () => {
         <Typography variant="h4" gutterBottom>
           Enter your podacast information
         </Typography>
-        <UploadForm />
+        <UploadForm categories={categories} />
       </Container>
     </div>
   );
 };
-
-export default UploadPages;

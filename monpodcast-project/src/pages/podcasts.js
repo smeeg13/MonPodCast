@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
 export async function getStaticProps() {
   const podcasts = new PodcastsManager();
   const result = await podcasts.getAllPodcasts();
+  console.log(result);
 
   return {
     props: { podcasts: result },
