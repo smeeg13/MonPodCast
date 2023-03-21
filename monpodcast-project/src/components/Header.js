@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import { MdMenu, MdSearch } from "react-icons/md";
 import { makeStyles } from "@material-ui/core/styles";
+import styles from "../styles/Header.module.css";
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -52,7 +53,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Header = () => {
+const Header = ({ handlePlayClick }) => {
+  const liveStreamUrl = "https://rhonefm.ice.infomaniak.ch/rhonefm-high.mp3";
   const [anchorElMenu, setAnchorElMenu] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const classes = useStyles();
@@ -75,12 +77,13 @@ const Header = () => {
     setAnchorElUser(null);
   };
 
- 
-const handleSearch = async(property) =>{
-    const data= await fetch(`http://localhost:3000/api/search?term=${property}`)
+  const handleSearch = async (property) => {
+    const data = await fetch(
+      `http://localhost:3000/api/search?term=${property}`
+    );
     const res = await data.json();
-     console.log(res);
-   }
+    console.log(res);
+  };
 
   return (
     <div className={classes.header}>
@@ -120,14 +123,19 @@ const handleSearch = async(property) =>{
             alt="logo"
             height="32"
           />
+          <button
+            className={styles.liveButton}
+            onClick={() => handlePlayClick(liveStreamUrl, "Live Stream")}
+          >
+            Live
+          </button>
           <div className={classes.search}>
             <InputBase
-            onKeyPress={(e) => {
-    if (e.key === 'Enter') {
-      handleSearch(e.target.value);
-    }
-  }}
-
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch(e.target.value);
+                }
+              }}
               placeholder="Search…"
               classes={{
                 root: classes.inputRoot,

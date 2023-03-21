@@ -22,14 +22,11 @@ const Player = ({ audioSrc, podcastName }) => {
   }, [podcastName, currentSongName]);
 
   useEffect(() => {
-    setIsPlaying(true);
-    audioRef.current.play();
-  }, []);
-
-  useEffect(() => {
-    setCurrentSongName(podcastName || "There's no title");
-    console.log(podcastName);
-  }, [podcastName]);
+    if (audioRef.current) {
+      setIsPlaying(true);
+      audioRef.current.play();
+    }
+  }, [audioSrc]);
 
   const handlePlayPause = () => {
     if (isPlaying) {
