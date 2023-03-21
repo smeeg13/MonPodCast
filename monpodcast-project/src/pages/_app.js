@@ -28,7 +28,7 @@ function MyApp({
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
         <>
-          <Header />
+          <Header handlePlayClick={handlePlayClick} />
           <Component {...pageProps} handlePlayClick={handlePlayClick} />
           {selectedPodcast && (
             <Player
