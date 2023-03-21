@@ -1,14 +1,14 @@
 import "bootstrap/dist/css/bootstrap.css";
 import Header from "../components/Header";
-import Player from "../components/Player";
 import "../styles/globals.css";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "../../utils/theme";
 import createEmotionCache from "../../utils/createEmotionCache";
 import { CacheProvider } from "@emotion/react";
+import React, { useState } from "react";
+import Player from "../components/Player";
 
 const clientSideEmotionCache = createEmotionCache();
-import React, { useState } from "react";
 
 function MyApp({
   Component,
@@ -31,17 +31,10 @@ function MyApp({
           <Header />
           <Component {...pageProps} handlePlayClick={handlePlayClick} />
           {selectedPodcast && (
-            <>
-              {console.log(
-                "MyApp render selectedPodcastName:",
-                selectedPodcastName
-              )}
-              <Player
-                audioSrc={selectedPodcast}
-                podcastName={selectedPodcastName}
-                setSelectedPodcast={setSelectedPodcast}
-              />
-            </>
+            <Player
+              audioSrc={selectedPodcast}
+              podcastName={selectedPodcastName}
+            />
           )}
         </>
       </ThemeProvider>

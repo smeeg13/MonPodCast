@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
   categoryContainer: {
     overflowX: "auto",
     whiteSpace: "nowrap",
+
     "&::-webkit-scrollbar": {
       height: "0.5rem",
       backgroundColor: "#f5f5f5",
@@ -37,15 +38,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Home({ podcasts }) {
+export default function Home({ podcasts, handlePlayClick }) {
   const classes = useStyles();
-  const [selectedAudioUrl, setSelectedAudioUrl] = useState(null);
-  const [selectedPodcastName, setSelectedPodcastName] = useState("");
-
-  const handlePlayClick = (audioSrc, podcastName) => {
-    setSelectedAudioUrl(audioSrc);
-    setSelectedPodcastName(podcastName);
-  };
 
   return (
     <div className={classes.pageWrapper}>
@@ -70,9 +64,6 @@ export default function Home({ podcasts }) {
           handlePlayClick={handlePlayClick}
         />
       </div>
-      {selectedAudioUrl && (
-        <Player audioSrc={selectedAudioUrl} podcastName={selectedPodcastName} />
-      )}
     </div>
   );
 }
