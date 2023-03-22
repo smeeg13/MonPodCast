@@ -3,6 +3,8 @@ import Head from "next/head";
 import { Container, Typography, List, ListItem } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import LoginForm from "../components/LoginForm";
+import {Routes, Route, useNavigate} from 'react-router-dom';
+
 
 const useStyles = makeStyles((theme) => ({
   uploadContainer: {
@@ -27,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
 const loginScreen = () => {
   const classes = useStyles();
 
+
   return (
     <div
       className={classes.uploadContainer}
@@ -41,7 +44,9 @@ const loginScreen = () => {
          Enter your information to login 
         </Typography>
         <LoginForm/>
+        <a href="/registerScreen">Register</a>
       </Container>
+    
     </div>
   );
 };

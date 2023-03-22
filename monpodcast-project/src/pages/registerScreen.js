@@ -1,8 +1,8 @@
-import UploadForm from "@/components/UploadForm";
+import RegisterForm from "../components/registerForm";
 import Head from "next/head";
 import { Container, Typography, List, ListItem } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import CategoriesManager from '../models/categoriesManager'
+import LoginForm from "../components/LoginForm";
 
 const useStyles = makeStyles((theme) => ({
   uploadContainer: {
@@ -24,18 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export async function getStaticProps() {
-  const categories = new CategoriesManager();
-  const result = await categories.getAllCategories();
-
-  console.log(result);
-
-  return {
-    props: { categories: result },
-  };
-}
-
-export default function UploadPage  ({ categories }) {
+const registerScreen = () => {
   const classes = useStyles();
 
   return (
@@ -45,14 +34,17 @@ export default function UploadPage  ({ categories }) {
       style={{ marginTop: 100 }}
     >
       <Head>
-        <title>Upload your Podcast</title>
+        <title>Login</title>
       </Head>
       <Container maxWidth="md">
         <Typography variant="h4" gutterBottom>
-          Enter your podacast information
+         Enter your information to register 
         </Typography>
-        <UploadForm categories={categories} />
+        <RegisterForm/>
+        <a href="/loginScreen">login</a>
       </Container>
     </div>
   );
 };
+
+export default registerScreen;

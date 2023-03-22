@@ -9,13 +9,16 @@ export default async function handler(req, res) {
 
     const usersManager = new UsersManager();
   
-    const loginUser = {
+    const newUser = {
       email: body.email,
-      password: body.password
+      password: body.password,
+      username: body.username
   };
   
     try {
-      const result = await usersManager.verifyUser(loginUser.email,loginUser.password)
+
+
+      const result = await usersManager.addUser(newUser); 
       
       
       if (result) {
@@ -23,16 +26,16 @@ export default async function handler(req, res) {
         // Sends a HTTP success code
         return res
           .status(200)
-          .json({ data: `You're logged in` });
+          .json({ data: `User created` });
       } else {
         return res
           .status(400)
-          .json({ data: 'Wrong creds'});
+          .json({ data: 'Unable to create the user'});
       }
     } catch (error) {
       // Sends a HTTP bad request error code
       return res
         .status(400)
-        .json({ data: `Error while loggin ${error} ` });
+        .json({ data: `Error while adding a user ${error} ` });
     }
 }

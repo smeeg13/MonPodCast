@@ -37,15 +37,16 @@ export default class PodcastsManager {
       const newDate = dayjs(podcast.date).format("DD/MM/YYYY");
       return {
         id: podcast._id.toHexString(),
-        name: podcast.name,
+        name: podcast.name, 
         description: podcast.description ?? "",
         url: podcast.url ?? "",
         date: newDate ?? "",
         duration: durationValue,
         tags: podcast.tags ?? [],
+        categoryId: podcast.categoryId ?? null,
         image:
           podcast.image ??
-          `https://source.unsplash.com/random/200x100?sig=${index + 1}`,
+          `https://source.unsplash.com/random/200x100?sig=${index + 1}`
       };
     });
 
@@ -76,6 +77,7 @@ export default class PodcastsManager {
         url: podcast.url ?? "",
         date: newDate ?? "",
         duration: durationValue,
+        categoryId: podcast.categoryId ?? null,
         tags: podcast.tags ?? [],
         image:
           podcast.image ?? "https://source.unsplash.com/random/200x100?sig=1",

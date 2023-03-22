@@ -80,22 +80,14 @@ export default class UsersManager {
 
   verifyUser = async (email,password) => {
     // add the HASH function for the password 
-    const Uses = await this.#getCollection(); 
+    const Users = await this.#getCollection(); 
     let res = await Users.findOne({email: email},{password: password})
 
-    res = res.map((user) => {
-      return{
-        id: user._id.toHexString(), 
-        email: user.email,
-        password: user.password,
-        name: user.name
-      }
-      });
-      if (res.length > 0){
+    if (res._id != null){
         return res; 
-      }else{
+    }else{
         return null
-      }
+    }
     
   }
 
