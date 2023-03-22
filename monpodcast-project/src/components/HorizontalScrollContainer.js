@@ -20,15 +20,17 @@ const HorizontalScrollContainer = ({ children }) => {
 
   return (
     <div className={styles.horizontalScrollContainer}>
-      <button className={styles.arrowLeft} onClick={scrollLeft}>
-        &larr;
-      </button>
+      <button
+        className={`${styles.arrowLeft} arrowLeft`}
+        onClick={scrollLeft}
+      ></button>
       <div className={styles.scrollWrapper} ref={scrollRef}>
         {children}
       </div>
-      <button className={styles.arrowRight} onClick={scrollRight}>
-        &rarr;
-      </button>
+      <button
+        className={`${styles.arrowRight} arrowRight`}
+        onClick={scrollRight}
+      ></button>
     </div>
   );
 };

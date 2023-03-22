@@ -1,14 +1,54 @@
 .horizontalScrollContainer {
+  position: relative;
   display: flex;
   align-items: center;
 }
-
 .arrowLeft,
 .arrowRight {
-  background: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
   border: none;
-  font-size: 1.5rem;
   cursor: pointer;
+  border-radius: 50%;
+  padding: 10px;
+  z-index: 1;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.arrowLeft::before,
+.arrowRight::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-color: transparent;
+}
+
+.arrowLeft::before {
+  border-width: 10px 15px 10px 0;
+  border-right-color: #000;
+}
+
+.arrowRight::after {
+  border-width: 10px 0 10px 15px;
+  border-left-color: #000;
+}
+
+.arrowLeft {
+  left: 0;
+  background-color: rgba(173, 216, 230, 0.5);
+}
+
+.arrowRight {
+  right: 0;
+  background-color: rgba(173, 216, 230, 0.5);
 }
 
 .scrollWrapper {
