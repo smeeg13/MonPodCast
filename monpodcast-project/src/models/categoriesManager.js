@@ -35,7 +35,7 @@ export default class CategoriesManager {
     const Categories = await this.#getCollection();
     let res = await Categories.find({}).toArray();
 
-    res = res.map((category) => {
+    res = res.map((category, index) => {
       console.log(category);
       return {
         id: category._id.toHexString(),
@@ -44,7 +44,6 @@ export default class CategoriesManager {
     });
 
     if (res.length > 0) {
-      console.log(res);
       return res;
     } else {
       console.log(`No Categories found`);
@@ -56,7 +55,7 @@ export default class CategoriesManager {
     console.log(`Categories.js > getCategories`);
 
     const Categories = await this.#getCollection();
-    let res = await Categories.findOne({ name: namecategory });
+    let res = await Categories.find({ name: namecategory }).toArray();
 
     res = res.map((category) => {
       return {
@@ -67,20 +66,35 @@ export default class CategoriesManager {
 
     if (res.length > 0) {
       console.log(res);
-      return res;
+      return res[0];
     } else {
       console.log(`No category found`);
       return null;
     }
   };
 
-  upsertCategory = async (id, category) => {
+  addCategory = async (category) => {
+    console.log(`category.js > addcategory: ${category}`);
+
+    const Category = await this.#getCollection();
+    return await Category.insertOne(category);
+  };
+
+  upsertCategory = async (category) => {
     console.log(`category.js > updatecategory: ${category}`);
 
     const categoryCollection = await this.#getCollection();
-    return await categoryCollection.updateOne(
-      { _id: new ObjectId(id) },
-      { $set: category }, { upsert: true });
+    return await categoryCollection.findAndModify({
+      query: { name: category.name},
+      update: {
+        $setOnInsert: category
+      },
+      new: true,   // return new doc if one is upserted
+      upsert: true // insert the document if it does not exist
+    })
+    // .updateOne(
+    //   { name: category.name },
+    //   { $set: category }, { upsert: true });
   };
 
   addMultipleCategories = async (newCategories) => {
