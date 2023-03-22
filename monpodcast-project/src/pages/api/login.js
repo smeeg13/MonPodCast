@@ -15,22 +15,24 @@ export default async function handler(req, res) {
   };
   
     try {
-      const result = await usersManager.verify(loginUser.email,loginUser.password)
-      if (True) {
+      const result = await usersManager.verifyUser(loginUser.email,loginUser.password)
+      
+      
+      if (result) {
         // Found the name.
         // Sends a HTTP success code
-        res
+        return res
           .status(200)
-          .json({ data: `New Podcaste Added with id ; ${result.insertedId} ` });
+          .json({ data: `You're logged in` });
       } else {
         return res
           .status(400)
-          .json({ data: `Couldn't add the podcast ; ${body.name} ` });
+          .json({ data: 'Wrong creds'});
       }
     } catch (error) {
       // Sends a HTTP bad request error code
       return res
         .status(400)
-        .json({ data: `Couldn't add the podcast ; ${body.name} ` });
+        .json({ data: `Error while loggin ${error} ` });
     }
 }
