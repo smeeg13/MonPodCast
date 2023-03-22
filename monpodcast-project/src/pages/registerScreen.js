@@ -1,10 +1,8 @@
-import loginForm from "../components/LoginForm";
+import RegisterForm from "../components/registerForm";
 import Head from "next/head";
 import { Container, Typography, List, ListItem } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import LoginForm from "../components/LoginForm";
-import {Routes, Route, useNavigate} from 'react-router-dom';
-
 
 const useStyles = makeStyles((theme) => ({
   uploadContainer: {
@@ -26,9 +24,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const loginScreen = () => {
+const registerScreen = () => {
   const classes = useStyles();
-
 
   return (
     <div
@@ -41,14 +38,13 @@ const loginScreen = () => {
       </Head>
       <Container maxWidth="md">
         <Typography variant="h4" gutterBottom>
-         Enter your information to login 
+         Enter your information to register 
         </Typography>
-        <LoginForm/>
-        <a href="/registerScreen">Register</a>
+        <RegisterForm/>
+        <a href="/loginScreen">login</a>
       </Container>
-    
     </div>
   );
 };
 
-export default loginScreen;
+export default registerScreen;
