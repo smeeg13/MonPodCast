@@ -1,4 +1,4 @@
-import PodcastsManager from "./models/podcastsManager";
+import PodcastsManager from "../models/podcastsManager";
 import { makeStyles } from "@material-ui/core/styles";
 import { List, ListItem, ListItemText } from "@material-ui/core";
 
