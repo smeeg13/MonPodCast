@@ -5,6 +5,7 @@ import { TagsInput } from "react-tag-input-component";
   
 const RegisterForm = () => {
 
+  const [passwordShown, setPasswordShown] = useState(false);
   const formik = useFormik({
     initialValues: {     
       email: "",
@@ -26,8 +27,14 @@ const RegisterForm = () => {
       username: inputs.username
     };
 
+    const togglePassword = () => {
+      // When the handler is invoked
+      // inverse the boolean state of passwordShown
+      setPasswordShown(!passwordShown);
+    };
+
     const JSONdata = JSON.stringify(data);
-    const endpoint = "/api/login";
+    const endpoint = "/api/_register";
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -41,8 +48,7 @@ const RegisterForm = () => {
     const result = await response.json();
     alert(`${result.data}`);
     if(result != null){
-  
-      navigate('/', { replace: true });
+      
     }
   };
 
@@ -67,7 +73,7 @@ const RegisterForm = () => {
       <div className="form-group">
         <label htmlFor="username">username</label>
         <input
-          type="text"
+         type={passwordShown ? "text" : "password"}
           id="username"
           name="username"
           onChange={formik.handleChange}
@@ -82,7 +88,7 @@ const RegisterForm = () => {
       <div className="form-group">
         <label htmlFor="password">password</label>
         <input
-          type="text"
+              type={passwordShown ? "text" : "password"}
           id="password"
           name="password"
           onChange={formik.handleChange}
@@ -99,7 +105,7 @@ const RegisterForm = () => {
       <div className="form-group">
         <label htmlFor="conf_password">vérification du mot de passe</label>
         <input
-          type="text"
+          type="password"
           id="conf_password"
           name="conf_password"
           onChange={formik.handleChange}

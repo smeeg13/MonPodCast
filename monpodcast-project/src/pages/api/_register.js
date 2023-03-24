@@ -7,6 +7,7 @@ export default async function handler(req, res) {
 
     // Logging to see the request
 
+    console.log(req.body)
     const usersManager = new UsersManager();
   
     const newUser = {
@@ -17,11 +18,10 @@ export default async function handler(req, res) {
   
     try {
 
-
       const result = await usersManager.addUser(newUser); 
       
       
-      if (result) {
+      if (result.insertedId) {
         // Found the name.
         // Sends a HTTP success code
         return res
