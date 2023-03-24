@@ -1,18 +1,52 @@
 {
   "name": "monpodcast-project",
   "version": "0.1.0",
+  "homepage": "https://github.com/smeeg13/MonPodCast/tree/main/monpodcast-project/src",
   "private": true,
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/cache": "^11.10.5",
+    "@emotion/react": "^11.10.6",
+    "@emotion/server": "^11.10.0",
+    "@emotion/styled": "^11.10.6",
+    "@fontsource/roboto": "^4.5.8",
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/styles": "^4.11.5",
+    "@mui/base": "^5.0.0-alpha.121",
+    "@mui/icons-material": "^5.11.11",
+    "@mui/material": "^5.11.13",
+    "bootstrap": "^5.2.3",
+    "dayjs": "^1.11.7",
+    "dns": "file:./src/mock/dns",
+    "eslint-config-next": "^13.2.3",
+    "formik": "^2.2.9",
     "mongodb": "^5.1.0",
+    "mongoose": "^7.0.1",
+    "net": "^1.0.2",
     "next": "^13.2.3",
     "next-connect": "^0.13.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.8.0",
+    "react-router-dom": "^6.9.0",
+    "react-tag-input-component": "^2.0.2",
+    "swr": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/prop-types": "^15.7.5",
+    "gh-pages": "^5.0.0",
+    "prop-types": "^15.8.1"
+  },
+  "browser": {
+    "tls": false,
+    "net": false,
+    "fs": false
   }
 }
