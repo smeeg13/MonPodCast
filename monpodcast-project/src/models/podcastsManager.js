@@ -37,7 +37,7 @@ export default class PodcastsManager {
       const newDate = dayjs(podcast.date).format("DD/MM/YYYY");
       return {
         id: podcast._id.toHexString(),
-        name: podcast.name, 
+        name: podcast.name,
         description: podcast.description ?? "",
         url: podcast.url ?? "",
         date: newDate ?? "",
@@ -46,7 +46,7 @@ export default class PodcastsManager {
         categoryId: podcast.categoryId ?? null,
         image:
           podcast.image ??
-          `https://source.unsplash.com/random/200x100?sig=${index + 1}`
+          `https://source.unsplash.com/random/200x100?sig=${index + 1}`,
       };
     });
 
@@ -57,6 +57,42 @@ export default class PodcastsManager {
       console.log(`No Podcasts found`);
       return null;
     }
+  };
+
+  searchPodcast = async (term) => {
+    console.log(`Podcasts.js > searchPodcasts for term : `, term);
+
+    const Podcasts = await this.#getCollection();
+    const data = await Podcasts.aggregate([
+      {
+        "$search": {
+          "near": {
+            "path": "name",
+            "origin": term,
+          }
+        }
+      },
+      {
+        $project: {
+          "_id": 0,
+          "name": 1,
+          "description": 1
+        }
+      },
+      {
+        "$facet": {
+          "docs": [
+            {"$limit": 5}
+          ],
+          "meta": [
+            {"$replaceWith": "$$SEARCH_META"},
+            {"$limit": 1}
+          ]
+        }
+      }
+    ]).toArray();
+    console.log("data get from Agregate :", data);
+    return data;
   };
 
   getPodcastByName = async (namepodcast) => {
