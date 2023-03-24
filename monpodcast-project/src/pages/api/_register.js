@@ -13,7 +13,8 @@ export default async function handler(req, res) {
     const newUser = {
       email: body.email,
       password: body.password,
-      username: body.username
+      username: body.username,
+      is_admin: false
   };
   
     try {

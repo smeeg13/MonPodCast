@@ -73,7 +73,7 @@ const RegisterForm = () => {
       <div className="form-group">
         <label htmlFor="username">username</label>
         <input
-         type={passwordShown ? "text" : "password"}
+         type="text"
           id="username"
           name="username"
           onChange={formik.handleChange}
@@ -105,7 +105,7 @@ const RegisterForm = () => {
       <div className="form-group">
         <label htmlFor="conf_password">vérification du mot de passe</label>
         <input
-          type="password"
+           type={passwordShown ? "text" : "password"}
           id="conf_password"
           name="conf_password"
           onChange={formik.handleChange}
