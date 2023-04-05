@@ -7,6 +7,7 @@ import createEmotionCache from "../../utils/createEmotionCache";
 import { CacheProvider } from "@emotion/react";
 import React, { useState } from "react";
 import Player from "../components/Player";
+import Footer from "../components/Footer";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -36,6 +37,7 @@ function MyApp({
               podcastName={selectedPodcastName}
             />
           )}
+          <Footer></Footer>
         </>
       </ThemeProvider>
     </CacheProvider>
