@@ -4,14 +4,18 @@ import PodcastsManager from "../models/podcastsManager";
 import { theme } from "../../utils/theme";
 import { useState } from "react";
 import Player from "../components/Player";
+import CategoriesManager from "../models/categoriesManager";
 
 export async function getServerSideProps(context) {
   const podcasts = new PodcastsManager();
+  const categories = new CategoriesManager();
 
-  const result = await podcasts.getAllPodcasts();
+
+  const podList = await podcasts.getAllPodcasts();
+  const catList = await categories.getAllCategories();
 
   return {
-    props: { podcasts: result },
+    props: { podcasts: podList, categories: catList },
   };
 }
 
@@ -38,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Home({ podcasts, handlePlayClick }) {
+export default function Home({ podcasts,categories, handlePlayClick }) {
   const classes = useStyles();
 
   return (
@@ -48,21 +52,10 @@ export default function Home({ podcasts, handlePlayClick }) {
         id="category-container"
         style={{ marginTop: 100 }}
       >
-        <Category
-          name="Category 1"
-          podcasts={podcasts}
-          handlePlayClick={handlePlayClick}
-        />
-        <Category
-          name="Category 2"
-          podcasts={podcasts}
-          handlePlayClick={handlePlayClick}
-        />
-        <Category
-          name="Category 3"
-          podcasts={podcasts}
-          handlePlayClick={handlePlayClick}
-        />
+       {categories.map(category => {
+          const categoryPodcasts = podcasts.filter(podcast => podcast.categoryId === category.id);
+          return <Category key={category.id} name={category.name} podcasts={categoryPodcasts} handlePlayClick={handlePlayClick} />;
+        })}
       </div>
     </div>
   );

@@ -17,8 +17,8 @@ export default async function handler(req, res) {
     try {
       const result = await usersManager.verifyUser(loginUser.email,loginUser.password)
       
-      
-      if (result) {
+
+      if (result._id) {
         // Found the name.
         // Sends a HTTP success code
         return res

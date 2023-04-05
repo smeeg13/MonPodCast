@@ -58,6 +58,15 @@ const Header = ({ handlePlayClick }) => {
   const [anchorElMenu, setAnchorElMenu] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const classes = useStyles();
+  // Define a state variable to store the search results
+const [searchResults, setSearchResults] = useState([]);
+const [searchTerm, setSearchTerm] = useState(' Search… ');
+
+// Define an event handler to handle user input
+const handleInputChange = (event) => {
+  setSearchTerm(event.target.value)
+  handleSearch(searchTerm);
+}
 
   const handleMenuClick = (event) => {
     setAnchorElMenu(event.currentTarget);
@@ -77,12 +86,12 @@ const Header = ({ handlePlayClick }) => {
     setAnchorElUser(null);
   };
 
-  const handleSearch = async (property) => {
-    const data = await fetch(
-      `http://localhost:3000/api/search?term=${property}`
-    );
-    const res = await data.json();
+  const handleSearch = async (searchTerm) => {
+    const response = await fetch(`/api/search?term=${searchTerm}`);
+    const data = await response.json();
+    setSearchResults(data);
     console.log(res);
+    setSearchTerm(' Search… ')
   };
 
   return (
@@ -123,17 +132,18 @@ const Header = ({ handlePlayClick }) => {
             alt="logo"
             height="32"
           />
-          <button
+          {/* <button
             className={styles.liveButton}
             onClick={() => handlePlayClick(liveStreamUrl, "Live Stream")}
           >
             Live
-          </button>
+          </button> */}
           <div className={classes.search}>
+
             <InputBase
               onKeyPress={(e) => {
                 if (e.key === "Enter") {
-                  handleSearch(e.target.value);
+                  handleInputChange(e.target.value);
                 }
               }}
               placeholder="Search…"
@@ -143,7 +153,7 @@ const Header = ({ handlePlayClick }) => {
               }}
               inputProps={{ "aria-label": "search" }}
               style={{ marginLeft: 50 }}
-            />
+            >searchTerm</InputBase>
           </div>
           <IconButton
             color="inherit"
