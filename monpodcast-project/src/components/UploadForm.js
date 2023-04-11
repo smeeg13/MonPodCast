@@ -4,7 +4,7 @@ import { TagsInput } from "react-tag-input-component";
 import { getDuration } from "../../utils/tools";
 import CategoriesManager from "@/models/categoriesManager";
 
-export default function UploadForm({ categories }) {
+export default function UploadForm({ categories, series }) {
   const [tagSelected, setTagSelected] = useState([]);
 
   // Pass the useFormik() hook initial form values and a submit function that will
@@ -19,6 +19,7 @@ export default function UploadForm({ categories }) {
       tags: tagSelected,
       image: "",
       nameCat: "",
+      nameSer: "",
       controlFile: "",
     },
     validate,
@@ -47,6 +48,7 @@ export default function UploadForm({ categories }) {
       tags: tagSelected,
       image: inputs.image,
       nameCat: inputs.nameCat,
+      nameSer: inputs.nameSer,
       controlFile: selectedFile,
     };
     console.log("DATA PASSED TO REQUEST ::", data);
@@ -191,6 +193,26 @@ export default function UploadForm({ categories }) {
           ))}
         </datalist>
       </div>
+    <br />
+    <div className="form-group">
+        <label htmlFor="nameSer">Choose a Series : </label>
+
+        <input
+            list="list-ser"
+            id="nameSer"
+            name="nameSer"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.nameSer}
+        />
+        <datalist id="list-ser">
+            {series.map((ser) => (
+                <option key={ser.id} value={ser.name}>
+                    {ser.name}
+                </option>
+            ))}
+        </datalist>
+    </div>
 
       <br />
       {/* //TODO selection du fichier */}
@@ -237,5 +259,10 @@ const validate = (values) => {
   if (!values.nameCat) {
     errors.nameCat = "Required";
   }
+
+  if (!values.nameSer) {
+    errors.nameSer = "Required";
+  }
+
   return errors;
 };

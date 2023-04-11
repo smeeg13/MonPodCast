@@ -1,6 +1,7 @@
 import PodcastsManager from "../../models/podcastsManager";
 import CategoriesManager from "../../models/categoriesManager";
 import { ObjectId } from "mongodb";
+import SeriesManager from "@/models/seriesManager";
 
 export default async function handler(req, res) {
   // Get data submitted in request's body.
@@ -13,7 +14,13 @@ export default async function handler(req, res) {
   const newCat = {
     name: body.nameCat,
   };
+
+  //Insert the new series in DB
+  const newSer = {
+    name: body.nameSer,
+  };
   const categories = new CategoriesManager();
+  const series = new SeriesManager();
   //Find if already exist
 
   let myCategory = await categories.getCategoryByName(newCat.name);
@@ -23,8 +30,16 @@ export default async function handler(req, res) {
     console.log('CATEGORY CREATED');
   }
 
+  let mySeries = await series.getSeriesByName(newSer.name);
+  if(mySeries == null){
+    //create new one
+    mySeries = await series.addSeries(newSer);
+    console.log('SERIES CREATED');
+  }
+
     console.log('CATEGORY GOT BACK : ',myCategory);
- 
+    console.log('SERIES GOT BACK : ',mySeries);
+
     const podManager = new PodcastsManager();
   
     const newPodcast = {
@@ -35,6 +50,7 @@ export default async function handler(req, res) {
       duration: body.duration ? "" : 0,
       tags: body.tags,//TODO:: CHECK WHY TAGS AREN'T SAVED
       categoryId: myCategory.id ?? myCategory.insertedId.toHexString(),
+      seriesId: mySeries.id ?? mySeries.insertedId.toHexString(),
       image: body.image ? "" : "https://source.unsplash.com/random/200x100?sig=1",
     };
   
