@@ -2,7 +2,12 @@ import { useFormik } from "formik";
 import React, { useState } from "react";
 import { TagsInput } from "react-tag-input-component";
 import { getDuration } from "../../utils/tools";
-import CategoriesManager from "@/models/categoriesManager";
+import axios from 'axios';
+
+
+
+
+
 
 export default function UploadForm({ categories, series }) {
   const [tagSelected, setTagSelected] = useState([]);
@@ -37,6 +42,8 @@ export default function UploadForm({ categories, series }) {
     if (selectedFile != null) {
       durationFormFile = getDuration(selectedFile);
     }
+  
+
 
     // Get data from the form.
     const data = {
@@ -72,6 +79,16 @@ export default function UploadForm({ categories, series }) {
     alert(`${result.data}`);
     //TODO: go back to the pdcast page
   };
+
+  function handleClick() {
+    axios.get('/my-python-endpoint')
+      .then(response => {
+        setResult(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 
   return (
     <form className="w-50" onSubmit={formik.handleSubmit}>
@@ -113,7 +130,7 @@ export default function UploadForm({ categories, series }) {
         <input
           type="text"
           id="url"
-          name="url"
+          name="url"handleClick
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.url}
@@ -137,18 +154,7 @@ export default function UploadForm({ categories, series }) {
           <small className="form-text text-muted">{formik.errors.date}</small>
         ) : null}
       </div>
-      <br />
-      <div className="form-group">
-        <label htmlFor="duration">Duration of the podcast</label>
-        <input
-          type="number"
-          id="duration"
-          name="duration"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.duration}
-        />
-      </div>
+      <br/>
       <br />
       <div className="form-group">
         <label htmlFor="image">Image</label>
@@ -228,6 +234,10 @@ export default function UploadForm({ categories, series }) {
       </div>
       <br />
       <br />
+
+      <button onClick={handleClick}>Call Python Script</button>
+
+
       <button type="submit" className="btn btn-primary">
         Submit
       </button>
