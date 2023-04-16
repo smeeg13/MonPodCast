@@ -2,9 +2,14 @@ import { useFormik } from "formik";
 import React, { useState } from "react";
 import { TagsInput } from "react-tag-input-component";
 import { getDuration } from "../../utils/tools";
-import CategoriesManager from "@/models/categoriesManager";
+import axios from 'axios';
 
-export default function UploadForm({ categories }) {
+
+
+
+
+
+export default function UploadForm({ categories, series }) {
   const [tagSelected, setTagSelected] = useState([]);
 
   // Pass the useFormik() hook initial form values and a submit function that will
@@ -19,6 +24,7 @@ export default function UploadForm({ categories }) {
       tags: tagSelected,
       image: "",
       nameCat: "",
+      nameSer: "",
       controlFile: "",
     },
     validate,
@@ -36,6 +42,8 @@ export default function UploadForm({ categories }) {
     if (selectedFile != null) {
       durationFormFile = getDuration(selectedFile);
     }
+  
+
 
     // Get data from the form.
     const data = {
@@ -47,6 +55,7 @@ export default function UploadForm({ categories }) {
       tags: tagSelected,
       image: inputs.image,
       nameCat: inputs.nameCat,
+      nameSer: inputs.nameSer,
       controlFile: selectedFile,
     };
     console.log("DATA PASSED TO REQUEST ::", data);
@@ -70,6 +79,16 @@ export default function UploadForm({ categories }) {
     alert(`${result.data}`);
     //TODO: go back to the pdcast page
   };
+
+  function handleClick() {
+    axios.get('/my-python-endpoint')
+      .then(response => {
+        setResult(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 
   return (
     <form className="w-50" onSubmit={formik.handleSubmit}>
@@ -111,7 +130,7 @@ export default function UploadForm({ categories }) {
         <input
           type="text"
           id="url"
-          name="url"
+          name="url"handleClick
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.url}
@@ -135,18 +154,7 @@ export default function UploadForm({ categories }) {
           <small className="form-text text-muted">{formik.errors.date}</small>
         ) : null}
       </div>
-      <br />
-      <div className="form-group">
-        <label htmlFor="duration">Duration of the podcast</label>
-        <input
-          type="number"
-          id="duration"
-          name="duration"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.duration}
-        />
-      </div>
+      <br/>
       <br />
       <div className="form-group">
         <label htmlFor="image">Image</label>
@@ -191,6 +199,26 @@ export default function UploadForm({ categories }) {
           ))}
         </datalist>
       </div>
+    <br />
+    <div className="form-group">
+        <label htmlFor="nameSer">Choose a Series : </label>
+
+        <input
+            list="list-ser"
+            id="nameSer"
+            name="nameSer"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.nameSer}
+        />
+        <datalist id="list-ser">
+            {series.map((ser) => (
+                <option key={ser.id} value={ser.name}>
+                    {ser.name}
+                </option>
+            ))}
+        </datalist>
+    </div>
 
       <br />
       {/* //TODO selection du fichier */}
@@ -206,6 +234,10 @@ export default function UploadForm({ categories }) {
       </div>
       <br />
       <br />
+
+      <button onClick={handleClick}>Call Python Script</button>
+
+
       <button type="submit" className="btn btn-primary">
         Submit
       </button>
@@ -237,5 +269,10 @@ const validate = (values) => {
   if (!values.nameCat) {
     errors.nameCat = "Required";
   }
+
+  if (!values.nameSer) {
+    errors.nameSer = "Required";
+  }
+
   return errors;
 };

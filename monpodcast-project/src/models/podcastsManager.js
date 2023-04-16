@@ -44,6 +44,7 @@ export default class PodcastsManager {
         duration: durationValue,
         tags: podcast.tags ?? [],
         categoryId: podcast.categoryId ?? null,
+        seriesId: podcast.seriesId ?? null,
         image:
           podcast.image ??
           `https://source.unsplash.com/random/200x100?sig=${index + 1}`,
@@ -114,6 +115,7 @@ export default class PodcastsManager {
         date: newDate ?? "",
         duration: durationValue,
         categoryId: podcast.categoryId ?? null,
+        seriesId: podcast.seriesId ?? null,
         tags: podcast.tags ?? [],
         image:
           podcast.image ?? "https://source.unsplash.com/random/200x100?sig=1",
