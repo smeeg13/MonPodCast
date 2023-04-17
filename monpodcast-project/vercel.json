@@ -10,17 +10,13 @@
       },
       {
         "src": "IA/**",
-        "use": "@vercel/python3"
+        "use": "@vercel/python"
       }
     ],
     "routes": [
       {
         "src": "/IA/(.*)",
         "dest": "server.py"
-      },
-      {
-        "src": "/(.*)",
-        "dest": "client/build/$1"
       }
     ]
   }
