@@ -18,6 +18,10 @@
       {
         "src": "/IA/(.*)",
         "dest": "server.py"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/client/build/index.js"
       }
     ]
   }
