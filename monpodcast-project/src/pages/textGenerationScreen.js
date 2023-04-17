@@ -1,3 +1,4 @@
+import { LineAxisOutlined } from '@mui/icons-material';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { ClipLoader } from 'react-spinners';
@@ -6,7 +7,8 @@ export default function textGeneratinoPage  () {
 
   const [output, setOutput] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const [audio, setAudio] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const [selectedFile, setSelectedFile] = React.useState(null);
 
@@ -21,6 +23,7 @@ export default function textGeneratinoPage  () {
 
     
     axios.post('http://localhost:5000/my-endpoint', formData)
+    //axios.post('https//https://text-recognition-ksz1.vercel.app/my-endpoint', formData)
       .then(response => {
         setOutput(response.data.data);
         console.log(response.data);
@@ -32,6 +35,7 @@ export default function textGeneratinoPage  () {
         setLoading(false);
       });
   };
+
 
   return (
     <div>
@@ -50,7 +54,8 @@ export default function textGeneratinoPage  () {
       <div>
       {loading ? <div className="spinner-container">
           <ClipLoader size={70} color="#123abc" loading={loading} />
-        </div> : <div>{output}</div>}
+        </div> : <div><p contentEditable={true}>{output}</p></div>}
+
     </div>  
     <br></br>
       <br></br>

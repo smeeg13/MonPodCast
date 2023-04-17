@@ -14,12 +14,13 @@ CORS(app)
 def my_endpoint():
     transcript = ""
     try:
-        wav_file = "IA/temp_audio.wav"
-        temp_mp4 = "IA/temp_mp4.mp4"
+        wav_file = "temp_audio.wav"
+        temp_mp4 = "temp_mp4.mp4"
         language = "fr-FR"
 
         mp4_file = request.files['file']
         
+     
         mp4_file.save(temp_mp4)
 
         audio = AudioFileClip(temp_mp4)
@@ -33,6 +34,8 @@ def my_endpoint():
 
 
         transcript = transcribe_wav_file(wav_file, language)
+       
+
         if os.path.exists(temp_mp4):
             # remove the file
             os.remove(temp_mp4)
@@ -40,8 +43,7 @@ def my_endpoint():
             print("File removed successfully.")
         else:
             print("File not found.")
-
-
+            
         if transcript:
             return jsonify({'data': str(transcript)})
         else:
@@ -105,5 +107,5 @@ def textGeneration(file_mp4):
 
 
 if __name__ == '__main__':
-     app.run()
+      app.run(host='0.0.0.0', port=5000)
 
