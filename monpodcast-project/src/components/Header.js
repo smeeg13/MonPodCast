@@ -129,6 +129,9 @@ const handleInputChange = (event) => {
             <MenuItem>
               <Link href="/series">Series</Link>
             </MenuItem>
+            <MenuItem>
+              <Link href="/textGenerationScreen">Text recognition</Link>
+            </MenuItem>
           </Menu>
           <img
             src="https://miniextensions.com/wp-content/uploads/sites/5/2019/12/placeholder.com-logo1.png"
