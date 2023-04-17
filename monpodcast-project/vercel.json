@@ -1,16 +1,17 @@
 {
     "version": 2,
     "builds": [
+     
+      {
+        "src": "IA/**",
+        "use": "@vercel/python"
+      },
       {
         "src": "client/package.json",
         "use": "@vercel/static-build",
         "config": {
           "distDir": "client/build"
         }
-      },
-      {
-        "src": "IA/**",
-        "use": "@vercel/python"
       }
     ],
     "routes": [
