@@ -9,7 +9,7 @@
         }
       },
       {
-        "src": "server/**",
+        "src": "IA/**",
         "use": "@vercel/python"
       }
     ],
