@@ -9,7 +9,7 @@ import axios from 'axios';
 
 
 
-export default function UploadForm({ categories, series }) {
+export default function UploadForm({ categories, series, user }) {
   const [tagSelected, setTagSelected] = useState([]);
 
   // Pass the useFormik() hook initial form values and a submit function that will
@@ -180,8 +180,11 @@ export default function UploadForm({ categories, series }) {
         />
       </div>
       <br />
-      <div className="form-group">
-        <label htmlFor="nameCat">Choose a Category : </label>
+      {/* If User is Admin : Can create new Category or Serie instead or just choosing one*/}
+      {user.is_admin ? (
+        <div>
+        <div className="form-group">
+        <label htmlFor="nameCat">Choose or Create a Category : </label>
 
         <input
           list="list-cat"
@@ -201,7 +204,7 @@ export default function UploadForm({ categories, series }) {
       </div>
     <br />
     <div className="form-group">
-        <label htmlFor="nameSer">Choose a Series : </label>
+        <label htmlFor="nameSer">Choose or Create a Series : </label>
 
         <input
             list="list-ser"
@@ -219,6 +222,54 @@ export default function UploadForm({ categories, series }) {
             ))}
         </datalist>
     </div>
+    </div>
+        ) 
+        : 
+        <div>
+        <div className="form-group">
+        <label htmlFor="nameCat">Choose a Category : </label>
+
+        <input
+          hidden='true'
+          list="list-cat"
+          id="nameCat"
+          name="nameCat"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.nameCat} 
+        />
+        <select id="list-cat">
+          {categories.map((category) => (
+            <option key={category.id} value={category.name}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+      </div>
+    <br />
+    <div className="form-group">
+        <label htmlFor="nameSer">Choose or Create a Series : </label>
+
+        <input
+                  hidden='true'
+            list="list-ser"
+            id="nameSer"
+            name="nameSer"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.nameSer}
+        />
+        <select id="list-ser">
+            {series.map((ser) => (
+                <option key={ser.id} value={ser.name}>
+                    {ser.name}
+                </option>
+            ))}
+        </select>
+    </div>
+    </div>
+          }
+      
 
       <br />
       {/* //TODO selection du fichier */}

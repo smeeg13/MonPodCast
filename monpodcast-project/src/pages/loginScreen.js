@@ -4,7 +4,8 @@ import { Container, Typography, List, ListItem } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import LoginForm from "../components/LoginForm";
 import {Routes, Route, useNavigate} from 'react-router-dom';
-
+import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   uploadContainer: {
@@ -29,6 +30,14 @@ const useStyles = makeStyles((theme) => ({
 const loginScreen = () => {
   const classes = useStyles();
 
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.query.message) {
+      alert(`${router.query.message}`);
+    }
+  }, [router.query]);
+
 
   return (
     <div
@@ -36,6 +45,7 @@ const loginScreen = () => {
       id="upload-container"
       style={{ marginTop: 100 }}
     >
+
       <Head>
         <title>Login</title>
       </Head>

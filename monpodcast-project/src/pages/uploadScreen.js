@@ -2,8 +2,9 @@ import UploadForm from "@/components/UploadForm";
 import Head from "next/head";
 import { Container, Typography, List, ListItem } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import CategoriesManager from '../models/categoriesManager'
-import SeriesManager from '../models/seriesManager'
+import CategoriesManager from "../models/categoriesManager";
+import SeriesManager from "../models/seriesManager";
+import UsersManager from "@/models/usersManager";
 
 const useStyles = makeStyles((theme) => ({
   uploadContainer: {
@@ -25,23 +26,44 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export async function getStaticProps() {
+export async function getServerSideProps(context) {
   const categories = new CategoriesManager();
   const resultCategories = await categories.getAllCategories();
 
   const series = new SeriesManager();
   const resultSeries = await series.getAllSeries();
 
+  const users = new UsersManager();
 
-  console.log(resultCategories);
+  // get the authenticated user from the request object
+  const  user = await users.authenticate();
+
+  console.log(user);
+    // user is passed to this page as a prop from the server
+    if (user == null) {
+      // if there is no user, redirect to the login page
+      return {
+        redirect: {
+          destination: '/loginScreen?message=Please+log+in+to+access+upload+page.',
+          permanent: false,
+        },
+      };
+    }
 
   return {
-    props: { categories: resultCategories, series: resultSeries },
+    props: {
+      categories: resultCategories,
+      series: resultSeries,
+      user: user
+    },
   };
 }
 
-export default function UploadPage  ({ categories, series }) {
+export default function UploadPage({ categories, series, user }) {
   const classes = useStyles();
+  console.log(user);
+
+
 
   return (
     <div
@@ -56,9 +78,8 @@ export default function UploadPage  ({ categories, series }) {
         <Typography variant="h4" gutterBottom>
           Enter your podcast information
         </Typography>
-        <UploadForm categories={categories} series={series} />
-
+        <UploadForm categories={categories} series={series} user={user} />
       </Container>
     </div>
   );
-};
+}
