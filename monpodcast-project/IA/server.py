@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from moviepy.editor import *
 import speech_recognition as sr
-from pydub import AudioSegment
 import os 
 
 
