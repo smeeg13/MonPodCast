@@ -7,8 +7,6 @@ export default function textGeneratinoPage  () {
 
   const [output, setOutput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [audio, setAudio] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
 
   const [selectedFile, setSelectedFile] = React.useState(null);
 
