@@ -2,14 +2,10 @@ import { useFormik } from "formik";
 import React, { useState } from "react";
 import { TagsInput } from "react-tag-input-component";
 import { getDuration } from "../../utils/tools";
-import axios from 'axios';
+import axios from "axios";
+import styles from "../styles/UploadForm.module.css";
 
-
-
-
-
-
-export default function UploadForm({ categories, series, user }) {
+export default function UploadForm({ categories, series }) {
   const [tagSelected, setTagSelected] = useState([]);
 
   // Pass the useFormik() hook initial form values and a submit function that will
@@ -42,8 +38,6 @@ export default function UploadForm({ categories, series, user }) {
     if (selectedFile != null) {
       durationFormFile = getDuration(selectedFile);
     }
-  
-
 
     // Get data from the form.
     const data = {
@@ -81,19 +75,22 @@ export default function UploadForm({ categories, series, user }) {
   };
 
   function handleClick() {
-    axios.get('/my-python-endpoint')
-      .then(response => {
+    axios
+      .get("/my-python-endpoint")
+      .then((response) => {
         setResult(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }
 
   return (
-    <form className="w-50" onSubmit={formik.handleSubmit}>
-      <div className="form-group">
-        <label htmlFor="name">Name Podcast</label>
+    <form className={styles.formContainer} onSubmit={formik.handleSubmit}>
+      <div className={`${styles.formGroup}`}>
+        <label htmlFor="name" className={styles.label}>
+          Name Podcast
+        </label>
         <input
           type="text"
           id="name"
@@ -108,8 +105,10 @@ export default function UploadForm({ categories, series, user }) {
       </div>
 
       <br />
-      <div className="form-group">
-        <label htmlFor="description">Description</label>
+      <div className={`${styles.formGroup}`}>
+        <label htmlFor="description" className={styles.label}>
+          Description
+        </label>
         <input
           type="text"
           id="description"
@@ -125,12 +124,15 @@ export default function UploadForm({ categories, series, user }) {
         ) : null}
       </div>
       <br />
-      <div className="form-group">
-        <label htmlFor="url">URL</label>
+      <div className={`${styles.formGroup}`}>
+        <label htmlFor="url" className={styles.label}>
+          URL
+        </label>
         <input
           type="text"
           id="url"
-          name="url"handleClick
+          name="url"
+          handleClick
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.url}
@@ -140,8 +142,10 @@ export default function UploadForm({ categories, series, user }) {
         ) : null}
       </div>
       <br />
-      <div className="form-group">
-        <label htmlFor="date">Creation Date of the podcast</label>
+      <div className={`${styles.formGroup}`}>
+        <label htmlFor="date" className={styles.label}>
+          Creation Date of the podcast
+        </label>
         <input
           type="date"
           id="date"
@@ -154,10 +158,12 @@ export default function UploadForm({ categories, series, user }) {
           <small className="form-text text-muted">{formik.errors.date}</small>
         ) : null}
       </div>
-      <br/>
       <br />
-      <div className="form-group">
-        <label htmlFor="image">Image</label>
+      <br />
+      <div className={`${styles.formGroup}`}>
+        <label htmlFor="image" className={styles.label}>
+          Image
+        </label>
         <input
           type="text"
           id="image"
@@ -168,9 +174,10 @@ export default function UploadForm({ categories, series, user }) {
         />
       </div>
       <br />
-      <div className="form-group">
-        {/* //TODO tags entered */}
-        <label htmlFor="tags">Tags related</label>
+      <div className={`${styles.formGroup}`}>
+        <label htmlFor="tags" className={styles.label}>
+          Tags related
+        </label>
         <TagsInput
           onBlur={formik.handleBlur}
           value={formik.values.tags}
@@ -180,11 +187,10 @@ export default function UploadForm({ categories, series, user }) {
         />
       </div>
       <br />
-      {/* If User is Admin : Can create new Category or Serie instead or just choosing one*/}
-      {user.is_admin ? (
-        <div>
-        <div className="form-group">
-        <label htmlFor="nameCat">Choose or Create a Category : </label>
+      <div className={`${styles.formGroup}`}>
+        <label htmlFor="nameCat" className={styles.label}>
+          Choose a Category:
+        </label>
 
         <input
           list="list-cat"
@@ -202,79 +208,35 @@ export default function UploadForm({ categories, series, user }) {
           ))}
         </datalist>
       </div>
-    <br />
-    <div className="form-group">
-        <label htmlFor="nameSer">Choose or Create a Series : </label>
+      <br />
+      <div className={`${styles.formGroup}`}>
+        <label htmlFor="nameSer" className={styles.label}>
+          Choose a Series:
+        </label>
 
         <input
-            list="list-ser"
-            id="nameSer"
-            name="nameSer"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.nameSer}
-        />
-        <datalist id="list-ser">
-            {series.map((ser) => (
-                <option key={ser.id} value={ser.name}>
-                    {ser.name}
-                </option>
-            ))}
-        </datalist>
-    </div>
-    </div>
-        ) 
-        : 
-        <div>
-        <div className="form-group">
-        <label htmlFor="nameCat">Choose a Category : </label>
-
-        <input
-          hidden='true'
-          list="list-cat"
-          id="nameCat"
-          name="nameCat"
+          list="list-ser"
+          id="nameSer"
+          name="nameSer"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          value={formik.values.nameCat} 
+          value={formik.values.nameSer}
         />
-        <select id="list-cat">
-          {categories.map((category) => (
-            <option key={category.id} value={category.name}>
-              {category.name}
+        <datalist id="list-ser">
+          {series.map((ser) => (
+            <option key={ser.id} value={ser.name}>
+              {ser.name}
             </option>
           ))}
-        </select>
+        </datalist>
       </div>
-    <br />
-    <div className="form-group">
-        <label htmlFor="nameSer">Choose or Create a Series : </label>
-
-        <input
-                  hidden='true'
-            list="list-ser"
-            id="nameSer"
-            name="nameSer"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.nameSer}
-        />
-        <select id="list-ser">
-            {series.map((ser) => (
-                <option key={ser.id} value={ser.name}>
-                    {ser.name}
-                </option>
-            ))}
-        </select>
-    </div>
-    </div>
-          }
-      
 
       <br />
       {/* //TODO selection du fichier */}
-      <div className="form-group">
-        <label htmlFor="controlFile">Select the podcast's file :</label>
+      <div className={`${styles.formGroup}`}>
+        <label htmlFor="controlFile" className={styles.label}>
+          Select the podcast's file:
+        </label>
         <input
           type="file"
           className="form-control-file"
@@ -286,12 +248,21 @@ export default function UploadForm({ categories, series, user }) {
       <br />
       <br />
 
-      <button onClick={handleClick}>Call Python Script</button>
+      <div className={styles.formGroup}>
+        <button
+          onClick={handleClick}
+          className={`btn btn-secondary ${styles.submitButton} ${styles.buttonMarginRight}`}
+        >
+          Call Python Script
+        </button>
 
-
-      <button type="submit" className="btn btn-primary">
-        Submit
-      </button>
+        <button
+          type="submit"
+          className={`btn btn-primary ${styles.submitButton}`}
+        >
+          Submit
+        </button>
+      </div>
     </form>
   );
 }
