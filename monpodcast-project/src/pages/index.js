@@ -1,10 +1,9 @@
 import { makeStyles } from "@material-ui/styles";
 import Category from "../components/Category";
 import PodcastsManager from "../models/podcastsManager";
-import { theme } from "../../utils/theme";
-import { useState } from "react";
-import Player from "../components/Player";
 import CategoriesManager from "../models/categoriesManager";
+import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
 
 export async function getServerSideProps(context) {
   const podcasts = new PodcastsManager();
@@ -44,6 +43,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home({ podcasts,categories, handlePlayClick }) {
   const classes = useStyles();
+
+  
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.query.message) {
+      alert(`${router.query.message}`);
+    }
+  }, [router.query]);
+
 
   return (
     <div className={classes.pageWrapper}>

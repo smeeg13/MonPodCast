@@ -2,8 +2,8 @@ import UploadForm from "@/components/UploadForm";
 import Head from "next/head";
 import { Container, Typography, List, ListItem } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import CategoriesManager from '../models/categoriesManager'
-import SeriesManager from '../models/seriesManager'
+import CategoriesManager from "../models/categoriesManager";
+import SeriesManager from "../models/seriesManager";
 
 const useStyles = makeStyles((theme) => ({
   uploadContainer: {
@@ -32,7 +32,6 @@ export async function getStaticProps() {
   const series = new SeriesManager();
   const resultSeries = await series.getAllSeries();
 
-
   console.log(resultCategories);
 
   return {
@@ -40,7 +39,7 @@ export async function getStaticProps() {
   };
 }
 
-export default function UploadPage  ({ categories, series }) {
+export default function UploadPage({ categories, series }) {
   const classes = useStyles();
 
   return (
@@ -53,12 +52,11 @@ export default function UploadPage  ({ categories, series }) {
         <title>Upload your Podcast</title>
       </Head>
       <Container maxWidth="md">
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h4" gutterBottom align="center">
           Enter your podcast information
         </Typography>
         <UploadForm categories={categories} series={series} />
-
       </Container>
     </div>
   );
-};
+}

@@ -15,11 +15,10 @@ export default async function handler(req, res) {
   };
   
     try {
-      const result = await usersManager.verifyUser(loginUser.email,loginUser.password)
+      const token = await usersManager.login(loginUser.email,loginUser.password)
       
 
-      if (result._id) {
-        // Found the name.
+      if (token) {
         // Sends a HTTP success code
         return res
           .status(200)

@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from moviepy.editor import *
 import speech_recognition as sr
-from pydub import AudioSegment
 import os 
 
 
@@ -18,8 +17,10 @@ def my_endpoint():
         temp_mp4 = "temp_mp4.mp4"
         language = "fr-FR"
 
+        print(request.files['file'])
         mp4_file = request.files['file']
         
+        print(mp4_file)
      
         mp4_file.save(temp_mp4)
 

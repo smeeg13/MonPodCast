@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useState, navigate } from "react";
 import { TagsInput } from "react-tag-input-component";
+import styles from "../styles/LoginForm.module.css";
 
 const LoginForm = () => {
   const formik = useFormik({
@@ -43,45 +44,54 @@ const LoginForm = () => {
   };
 
   return (
-    <div>
-      <form className="w-50" onSubmit={formik.handleSubmit}>
+    <div className={styles.loginFormContainer}>
+      <form className={styles.formWrapper} onSubmit={formik.handleSubmit}>
         <div className="form-group">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email" className={styles.labelText}>
+            Email
+          </label>
           <input
             type="text"
             id="email"
             name="email"
+            className={styles.inputField}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.name}
           />
           {formik.touched.name && formik.errors.name ? (
-            <small className="form-text text-muted">{formik.errors.name}</small>
+            <small className={styles.errorMessage}>{formik.errors.name}</small>
           ) : null}
         </div>
 
         <br />
         <div className="form-group">
-          <label htmlFor="password">password</label>
+          <label htmlFor="password" className={styles.labelText}>
+            Password
+          </label>
           <input
-            type="text"
+            type="password"
             id="password"
             name="password"
+            className={styles.inputField}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.description}
+            value={formik.values.password}
           />
-          {formik.touched.description && formik.errors.description ? (
-            <small className="form-text text-muted">
-              {formik.errors.description}
+          {formik.touched.password && formik.errors.password ? (
+            <small className={styles.errorMessage}>
+              {formik.errors.password}
             </small>
           ) : null}
         </div>
 
         <br />
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className={styles.submitButton}>
           Login
         </button>
+        <div className={styles.registerLink}>
+          <a href="/registerScreen">Register</a>
+        </div>
       </form>
     </div>
   );

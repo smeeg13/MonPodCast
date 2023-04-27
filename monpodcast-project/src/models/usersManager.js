@@ -1,9 +1,18 @@
 const { connectToDb } = require("../../lib/mongodb");
 const ObjectId = require("mongodb").ObjectId;
+import Cookies from 'js-cookie';
 import { USER_COLL } from "../../utils/constants";
+const jwt = require("jsonwebtoken");
 
 export default class UsersManager {
   client;
+  static userConnected = {
+    _id: "",
+    email: "",
+    password: "",
+    username: "",
+    is_admin: false,
+  };
 
   constructor() {
     this.client = connectToDb();
@@ -28,6 +37,15 @@ export default class UsersManager {
       return null;
     }
   };
+
+  setUser(newUser) {
+    this.userConnected = newUser;
+  }
+
+  getUser() {
+    console.log("user retrieved : ", this.userConnected);
+    return this.userConnected;
+  }
 
   getAllUsers = async () => {
     console.log(`Users.js > getUsers`);
@@ -78,18 +96,46 @@ export default class UsersManager {
     }
   };
 
-  verifyUser = async (email,password) => {
-    // add the HASH function for the password 
-    const Users = await this.#getCollection(); 
-    let res = await Users.findOne({email: email},{password: password})
+  login = async (email, password) => {
+    // add the HASH function for the password
+    const Users = await this.#getCollection();
+    let res = await Users.findOne({ email: email }, { password: password });
 
-    if (res._id != null){
-        return res; 
-    }else{
-        return null
+    if (res._id != null) {
+      const token = jwt.sign(
+        { userId: res._id, isAdmin: res.is_admin, username: res.username },
+        process.env.JWT_SECRET
+      );
+
+       // save the token as a cookie
+       Cookies.set('token', token);
+      
+      return token;
+    } else {
+      return null;
     }
-    
-  }
+  };
+
+  authenticate = async () => {
+
+    const token = Cookies.get('token');
+
+    if (token==null) {
+      return null;
+    }
+    try {
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+      const userId = decodedToken.userId;
+      const Users = await this.#getCollection();
+      const user = await Users.findOne({ _id: new ObjectId(userId) });
+      if (!user) {
+        throw new Error("User not found");
+      }
+      return user;
+    } catch (err) {
+      return null;
+    }
+  };
 
   addUser = async (user) => {
     console.log(`user.js > adduser: ${user}`);
