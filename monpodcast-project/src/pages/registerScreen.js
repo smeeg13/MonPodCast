@@ -1,8 +1,7 @@
 import RegisterForm from "../components/registerForm";
 import Head from "next/head";
-import { Container, Typography, List, ListItem } from "@material-ui/core";
+import { Container, Typography, Box } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import LoginForm from "../components/LoginForm";
 
 const useStyles = makeStyles((theme) => ({
   uploadContainer: {
@@ -22,6 +21,11 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#ccc",
     },
   },
+  formContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
 }));
 
 const registerScreen = () => {
@@ -34,14 +38,16 @@ const registerScreen = () => {
       style={{ marginTop: 100 }}
     >
       <Head>
-        <title>Login</title>
+        <title>Register</title>
       </Head>
       <Container maxWidth="md">
-        <Typography variant="h4" gutterBottom>
-         Enter your information to register 
-        </Typography>
-        <RegisterForm/>
-        <a href="/loginScreen">login</a>
+        <Box className={classes.formContainer}>
+          <Typography variant="h4" gutterBottom>
+            Enter your information to register
+          </Typography>
+          <RegisterForm />
+          <a href="/loginScreen">login</a>
+        </Box>
       </Container>
     </div>
   );

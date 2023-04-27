@@ -1,0 +1,36 @@
+.registerFormContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.formWrapper {
+  background-color: #f0f8ff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.formWrapper label {
+  display: block;
+  margin-top: 1rem;
+}
+
+.formWrapper input[type="text"],
+.formWrapper input[type="password"] {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.submitButton {
+  background-color: #add8e6;
+  border-color: #add8e6;
+  color: #ffffff;
+  width: 100%;
+  margin-top: 1rem;
+}

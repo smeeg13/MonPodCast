@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Link from "next/link";
 import {
   AppBar,
   Toolbar,
@@ -7,49 +6,20 @@ import {
   Menu,
   MenuItem,
   Avatar,
-  InputBase,
+  useMediaQuery,
 } from "@material-ui/core";
-import { MdMenu, MdSearch } from "react-icons/md";
-import { makeStyles } from "@material-ui/core/styles";
-import styles from "../styles/Header.module.css";
+import { MdMenu } from "react-icons/md";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   header: {
     position: "fixed",
-
     zIndex: theme.zIndex.appBar + 1,
-  },
-
-  search: {
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: theme.palette.common.white,
-    "&:hover": {
-      backgroundColor: theme.palette.common.white,
-    },
-    marginRight: theme.spacing(1),
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(3),
-      width: "auto",
-    },
-  },
-  inputRoot: {
-    color: "inherit",
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
   },
   toolbar: {
     display: "flex",
     justifyContent: "space-between",
+    padding: "0 1rem",
   },
 }));
 
@@ -58,15 +28,10 @@ const Header = ({ handlePlayClick }) => {
   const [anchorElMenu, setAnchorElMenu] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const classes = useStyles();
-  // Define a state variable to store the search results
-const [searchResults, setSearchResults] = useState([]);
-const [searchTerm, setSearchTerm] = useState(' Search… ');
+  const theme = useTheme();
 
-// Define an event handler to handle user input
-const handleInputChange = (event) => {
-  setSearchTerm(event.target.value)
-  handleSearch(searchTerm);
-}
+  // Use useMediaQuery to detect screen size
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleMenuClick = (event) => {
     setAnchorElMenu(event.currentTarget);
@@ -86,81 +51,78 @@ const handleInputChange = (event) => {
     setAnchorElUser(null);
   };
 
-  const handleSearch = async (searchTerm) => {
-    const response = await fetch(`/api/search?term=${searchTerm}`);
-    const data = await response.json();
-    setSearchResults(data);
-    console.log(res);
-    setSearchTerm(' Search… ')
-  };
-
   return (
     <div className={classes.header}>
       <AppBar>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="menu"
-            onClick={handleMenuClick}
-            style={{ marginRight: 20 }}
-          >
-            <MdMenu />
-          </IconButton>
-          <Menu
-            anchorEl={anchorElMenu}
-            keepMounted
-            open={Boolean(anchorElMenu)}
-            onClose={handleMenuClose}
-          >
-            <MenuItem onClick={handleMenuClose}>
-              {" "}
-              <Link href="/">home</Link>
-            </MenuItem>
-            <MenuItem onClick={handleMenuClose}>
-              {" "}
-              <Link href="/podcasts">Podcasts</Link>
-            </MenuItem>
-            <MenuItem>
-              <Link href="/categories">Categories</Link>
-            </MenuItem>
-            <MenuItem>
-              <Link href="/loginScreen">Login</Link>
-            </MenuItem>
-            <MenuItem>
-              <Link href="/series">Series</Link>
-            </MenuItem>
-            <MenuItem>
-              <Link href="/textGenerationScreen">Text recognition</Link>
-            </MenuItem>
-          </Menu>
-          <img
-            src="https://miniextensions.com/wp-content/uploads/sites/5/2019/12/placeholder.com-logo1.png"
-            alt="logo"
-            height="32"
-          />
-          {/* <button
-            className={styles.liveButton}
-            onClick={() => handlePlayClick(liveStreamUrl, "Live Stream")}
-          >
-            Live
-          </button> */}
-          <div className={classes.search}>
+        <Toolbar className={classes.toolbar}>
+          {isMobile ? (
+            // Show burger menu on mobile
+            <>
+              <IconButton
+                color="inherit"
+                aria-label="menu"
+                onClick={handleMenuClick}
+              >
+                <MdMenu />
+              </IconButton>
+              <Menu
+                anchorEl={anchorElMenu}
+                keepMounted
+                open={Boolean(anchorElMenu)}
+                onClose={handleMenuClose}
+              >
+                <MenuItem onClick={handleMenuClose}>
+                  <a href="/">Home</a>
+                </MenuItem>
+                <MenuItem onClick={handleMenuClose}>
+                  <a href="/podcasts">Podcasts</a>
+                </MenuItem>
+                <MenuItem onClick={handleMenuClose}>
+                  <a href="/categories">Categories</a>
+                </MenuItem>
+                <MenuItem onClick={handleMenuClose}>
+                  <a href="/loginScreen">Login</a>
+                </MenuItem>
+                <MenuItem onClick={handleMenuClose}>
+                  <a href="/series">Series</a>
+                </MenuItem>
+                <MenuItem onClick={handleMenuClose}>
+                  <a href="/textGenerationScreen">Text recognition</a>
+                </MenuItem>
+              </Menu>
+            </>
+          ) : (
+            // Show all as on desktop
+            <>
+              <img
+                src="https://miniextensions.com/wp-content/uploads/sites/5/2019/12/placeholder.com-logo1.png"
+                alt="logo"
+                height="32"
+              />
+              <a href="/" style={{ padding: "0 1rem" }}>
+                Home
+              </a>
+              <a href="/podcasts" style={{ padding: "0 1rem" }}>
+                Podcasts{" "}
+              </a>
+              <a href="/categories" style={{ padding: "0 1rem" }}>
+                Categories
+              </a>
+              <a href="/loginScreen" style={{ padding: "0 1rem" }}>
+                Login
+              </a>
+              <a href="/series" style={{ padding: "0 1rem" }}>
+                Series
+              </a>
+              <a
+                href="/textGenerationScreen"
+                style={{ padding: "0 1rem", marginRight: "auto" }}
+              >
+                Text recognition
+              </a>
+            </>
+          )}
 
-            <InputBase
-              onKeyPress={(e) => {
-                if (e.key === "Enter") {
-                  handleInputChange(e.target.value);
-                }
-              }}
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-              style={{ marginLeft: 50 }}
-            >searchTerm</InputBase>
-          </div>
           <IconButton
             color="inherit"
             onClick={handleUserClick}

@@ -4,7 +4,6 @@ import { Container, Typography, List, ListItem } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import CategoriesManager from "../models/categoriesManager";
 import SeriesManager from "../models/seriesManager";
-import UsersManager from "@/models/usersManager";
 
 const useStyles = makeStyles((theme) => ({
   uploadContainer: {
@@ -26,44 +25,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export async function getServerSideProps(context) {
+export async function getStaticProps() {
   const categories = new CategoriesManager();
   const resultCategories = await categories.getAllCategories();
 
   const series = new SeriesManager();
   const resultSeries = await series.getAllSeries();
 
-  const users = new UsersManager();
-
-  // get the authenticated user from the request object
-  const  user = await users.authenticate();
-
-  console.log(user);
-    // user is passed to this page as a prop from the server
-    if (user == null) {
-      // if there is no user, redirect to the login page
-      return {
-        redirect: {
-          destination: '/loginScreen?message=Please+log+in+to+access+upload+page.',
-          permanent: false,
-        },
-      };
-    }
+  console.log(resultCategories);
 
   return {
-    props: {
-      categories: resultCategories,
-      series: resultSeries,
-      user: user
-    },
+    props: { categories: resultCategories, series: resultSeries },
   };
 }
 
-export default function UploadPage({ categories, series, user }) {
+export default function UploadPage({ categories, series }) {
   const classes = useStyles();
-  console.log(user);
-
-
 
   return (
     <div
@@ -75,10 +52,10 @@ export default function UploadPage({ categories, series, user }) {
         <title>Upload your Podcast</title>
       </Head>
       <Container maxWidth="md">
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h4" gutterBottom align="center">
           Enter your podcast information
         </Typography>
-        <UploadForm categories={categories} series={series} user={user} />
+        <UploadForm categories={categories} series={series} />
       </Container>
     </div>
   );

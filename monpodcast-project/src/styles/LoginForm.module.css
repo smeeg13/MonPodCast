@@ -1,0 +1,52 @@
+.loginFormContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.formWrapper {
+  width: 50%;
+  padding: 1rem;
+  background-color: hsl(208, 61%, 53%);
+  border-radius: 5px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.labelText {
+  font-weight: bold;
+}
+
+.inputField {
+  width: 100%;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 0.8rem;
+}
+
+.submitButton {
+  width: 100%;
+  background-color: hsl(208, 66%, 45%);
+  color: white;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.registerLink {
+  margin-top: 1rem;
+  text-align: center;
+}
