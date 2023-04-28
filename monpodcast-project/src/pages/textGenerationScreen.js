@@ -88,12 +88,10 @@ export default function textGeneratinoPage  () {
       <br></br>
       <div>
       {loading ? <div className="spinner-container">
-          <ClipLoader size={90} color="#123abc" loading={loading} />
-          <p>Duration :  {clockFormated} / {DurationFormated}</p>
-        </div> : <div><p contentEditable={true}>{output}   <br/>
+          <ClipLoader size={90} color="#123abc" loading={loading}/>
+          <p><br></br>Duration :  {clockFormated} / {DurationFormated}</p>
+        </div> : <div><p contentEditable={true}>{output}  </p> <br/>
         {timer != 0 ?     <p><br></br>The program took {TimerFormated} seconde to generate the text</p>: <p>The length of the audio is {DurationFormated}</p>}
-    </p>
-
        </div>}
       {}
     </div>  
