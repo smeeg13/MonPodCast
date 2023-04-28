@@ -1,16 +1,17 @@
 from locust import HttpUser, task, between
 
 class MyUser(HttpUser):
-    wait_time = between(1, 2)
+    wait_time = 8
 
     @task
     def upload_mp4(self):
-        with open('test.mp4', 'rb') as file:
+        with open('test.mp4', 'rb') as file:    
             mp4_content = file.read()
+        error='Success !'
         headers = {'Content-Type': 'multipart/form-data'}
-        files = {'file':('test.mp4')}
+        files = {'file': ('test.mp4', mp4_content, 'video/mp4')}
         url = 'http://localhost:5000/my-endpoint'
-        response = self.client.post(url,  headers=headers, file=files)
+        response = self.client.post(url,  headers=headers, files=files)
         if response.status_code == 200:
             # Parse the response data and do any necessary validations
             json_value = response.json()
@@ -20,7 +21,7 @@ class MyUser(HttpUser):
             if (text == value):
                 print(f'Success :  {text}') 
             else: 
-                print(f'Failed to get the right text : {text}')
+                print(f'{error}')
             
         else:
             # Handle any errors or failures
